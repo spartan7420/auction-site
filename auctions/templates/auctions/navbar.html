@@ -1,0 +1,38 @@
+{% load static%}
+<nav>
+    <div class="site-logo">
+        <img src="" alt="">
+    </div>
+    <div class="site-title"><a href="">Auction Crow</a></div>
+    <div class="search-bar">
+        <input type="text" name="searchtext" placeholder="Search...">
+        <a href="#"><i class="fa fa-search" aria-hidden="true"></i></a>
+    </div>
+    <ul class="nav-links" id="nav-links">
+        <li class="dropdown currency">Currency
+            <span class="currency-value">INR 
+                <i class="fas fa-chevron-down"></i>
+            </span>
+            <ul class="nav-dropdown">
+                <li>INR</li>
+                <li>USD</li>
+                <li>YEN</li>
+            </ul>
+        </li>
+        <li class="your-bids">
+            <a href="">Your Bids</a>
+            <span class="bid-count">5</span></li>
+        <li class="dropdown">Account
+            <ul class="nav-dropdown">
+                <li><a href="">Login</a></li>
+                <li><a href="">Signup</a></li>
+            </ul>
+            <i class="fas fa-chevron-down"></i>
+        </li>
+    </ul>
+    <div class="burger" id="burger">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </div>
+</nav>
