@@ -71,9 +71,10 @@ nav li {
   -webkit-padding-start: 0px;
           padding-inline-start: 0px;
   position: absolute;
-  top: 66px;
+  top: 60px;
   z-index: 2;
-  min-width: 100px;
+  min-width: 140px;
+  border-radius: 10px;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
@@ -81,20 +82,25 @@ nav li {
   background-color: var(--light);
   -webkit-box-shadow: 0 2px 5px 0px rgba(0, 0, 0, 0.5);
           box-shadow: 0 2px 5px 0px rgba(0, 0, 0, 0.5);
-}
-
-.nav-dropdown li {
-  max-height: 40px !important;
-  padding: 10px;
-  margin-left: 0 !important;
-}
-
-.nav-dropdown li:hover {
-  background-color: #efefef;
+  padding: 5px 10px;
 }
 
 .nav-dropdown a, .nav-dropdown li {
+  max-height: 40px !important;
+  padding: 10px 5px;
+  margin-left: 0 !important;
+  white-space: nowrap;
+  border-radius: 10px;
   color: var(--primary);
+}
+
+.nav-dropdown a:hover, .nav-dropdown li:hover {
+  color: var(--secondary);
+  background-color: #efefef;
+}
+
+.drop-small {
+  min-width: 70px;
 }
 
 .currency, .your-bids {
@@ -239,7 +245,7 @@ nav li {
 .line {
   height: 3px;
   border-radius: 3px;
-  background-color: var(--secondary);
+  background-color: var(--light);
 }
 
 @media screen and (max-width: 949px) {
@@ -287,7 +293,7 @@ nav li {
     font-size: 1.2rem;
   }
   .nav-links {
-    display: none;
+    display: block;
     position: absolute;
     right: 0px;
     top: 66px;
@@ -355,9 +361,12 @@ nav li {
     display: flex;
   }
   .nav-active {
-    display: block;
     -webkit-transform: translateX(0);
             transform: translateX(0);
+    -webkit-transition: -webkit-transform 0.5s ease-in-out;
+    transition: -webkit-transform 0.5s ease-in-out;
+    transition: transform 0.5s ease-in-out;
+    transition: transform 0.5s ease-in-out, -webkit-transform 0.5s ease-in-out;
   }
   .currency, .your-bids {
     -webkit-box-orient: horizontal;
@@ -375,34 +384,33 @@ nav li {
     display: block;
     padding: 0 10px;
     position: relative;
-    height: 90px;
+    height: 70px;
   }
   .site-title {
-    margin: 0;
-    display: absolute;
-    top: 5px;
+    position: absolute;
+    top: 4px;
     left: 20px;
   }
   .burger {
     position: absolute;
     right: 10px;
-    top: 10px;
+    top: 4px;
     height: 30px;
     width: 30px;
   }
   .search-bar {
+    position: relative;
+    top: 17px;
     bottom: 2px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 0;
-    margin-bottom: 0;
   }
   .search-bar input[type=text] {
     padding: 5px;
+    min-width: 84%;
     height: 30px;
-    width: 100%;
+    margin-left: auto;
   }
   .search-bar a {
+    margin-right: auto;
     height: 30px;
     width: 40px;
     padding-right: 5px;
@@ -424,8 +432,8 @@ footer {
 
 .top-section {
   background-color: var(--light);
-  padding: 20px;
-  height: 500px;
+  padding: 5px;
+  height: 100%;
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: 1fr 3fr;
@@ -461,6 +469,14 @@ hr {
   color: var(--dark-400);
 }
 
+.category-list-content li:hover, .category-list-content a:hover {
+  color: var(--secondary);
+}
+
+.banner {
+  height: 400px;
+}
+
 .banner-title, .middle-section-title {
   font-size: 2rem;
   color: var(--primary);
@@ -471,7 +487,7 @@ hr {
 .banner-image {
   margin-top: 10px;
   background-color: var(--dark-400);
-  height: 90%;
+  height: 350px;
 }
 
 .middle-section {
@@ -615,14 +631,48 @@ hr {
 }
 
 .view-more {
+  display: block;
+  color: var(--secondary);
+  font-size: 1.1rem;
   float: right;
+}
+
+.wrapper-shop {
+  position: relative;
+  padding: 100px 30px;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 3fr;
+      grid-template-columns: 1fr 3fr;
+}
+
+.wrapper-shop .middle-section {
+  padding: 20px;
+  margin-top: 0px;
+}
+
+@media screen and (max-width: 1240px) {
+  .middle-section {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+}
+
+@media screen and (max-width: 958px) {
+  .auction-card {
+    max-width: 220px;
+  }
+  .middle-section {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
 }
 
 @media screen and (max-width: 600px) {
   .wrapper {
     padding-top: 20px;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding-right: 0;
+    padding-left: 0;
   }
   .top-section {
     -ms-grid-columns: 1fr;
@@ -632,6 +682,7 @@ hr {
   .banner {
     -ms-grid-row: 1;
     grid-row: 1;
+    height: 250px;
   }
   .banner-image {
     height: 200px;
@@ -644,7 +695,7 @@ hr {
     padding-right: 5px;
   }
   .auction-card {
-    max-width: 200px;
+    max-width: 220px;
     padding: 8px;
     border: 1px solid var(--light-border);
   }
@@ -653,6 +704,17 @@ hr {
   }
   .auction-img-container {
     height: 150px;
+  }
+  .view-more {
+    text-align: center;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (max-width: 469px) {
+  .auction-card {
+    max-width: 100%;
+    margin: 0 auto;
   }
 }
 /*# sourceMappingURL=style.css.map */

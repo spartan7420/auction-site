@@ -40,6 +40,7 @@ nav {
     height: 66px;
     box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.5);
     width: 100%;
+
     a {
         text-decoration: none;
         color: var(--light);
@@ -59,23 +60,29 @@ nav {
     list-style-type: none; 
     padding-inline-start: 0px;
     position: absolute;
-    top: 66px;
+    top: 60px;
     z-index: 2;
-    min-width: 100px;
+    min-width: 140px;
+    border-radius: 10px;
     flex-direction: column;
     background-color: var(--light);
     box-shadow: 0 2px 5px 0px rgba(0, 0, 0, 0.5);
-    li {
+    padding: 5px 10px;
+    a, li {
         max-height: 40px !important;
-        padding: 10px;
+        padding: 10px 5px;
         margin-left: 0 !important;
+        white-space: nowrap;
+        border-radius: 10px;
+        color: var(--primary);
         &:hover {
+            color: var(--secondary);
             background-color: #efefef;
         }
     }
-    a, li {
-        color: var(--primary);
-    }
+}
+.drop-small {
+    min-width: 70px;
 }
 .currency, .your-bids {
     display: flex;
@@ -164,7 +171,7 @@ nav {
 .line {
     height: 3px;
     border-radius: 3px;
-    background-color: var(--secondary);
+    background-color: var(--light);
 }
 
 @media screen and (max-width: 949px) {
@@ -206,7 +213,7 @@ nav {
         font-size: 1.2rem;
     }
     .nav-links {
-        display: none;
+        display: block;
         position: absolute;
         right: 0px;
         top: 66px;
@@ -258,8 +265,8 @@ nav {
         display: flex;
     }
     .nav-active {
-        display: block;
         transform: translateX(0);
+        transition: transform 0.5s ease-in-out;
     }
     .currency, .your-bids {
         flex-direction: row;
@@ -273,34 +280,32 @@ nav {
         display: block;
         padding: 0 10px;
         position: relative;
-        height: 90px;
+        height: 70px;
     }
     .site-title {
-        margin: 0;
-        display: absolute;
-        top: 5px;
+        position: absolute;
+        top: 4px;
         left: 20px;
     }
     .burger {
         position: absolute;
         right: 10px;
-        top: 10px;
+        top: 4px;
         height: 30px;
         width: 30px;
     }
     .search-bar {
-
+        position: relative;
+        top: 17px;
         bottom: 2px;
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 0;
-        margin-bottom: 0;
         input[type=text] {
             padding: 5px;
+            min-width: 84%;
             height: 30px;
-            width: 100%;
+            margin-left: auto;
         }
         a {
+            margin-right: auto;
             height: 30px;
             width: 40px;
             padding-right: 5px;
@@ -324,8 +329,8 @@ footer {
 }
 .top-section {
     background-color: var(--light);
-    padding: 20px;
-    height: 500px;
+    padding: 5px;
+    height: 100%;
     display: grid;
     grid-template-columns: 1fr 3fr;
     border: 1px solid var(--light-border);
@@ -351,6 +356,15 @@ hr {
         text-decoration: none;
         color: var(--dark-400);
     }
+    li, a {
+        &:hover {
+            color: var(--secondary);
+        }
+    }
+
+}
+.banner {
+    height: 400px;
 }
 .banner-title, .middle-section-title {
     font-size: 2rem;
@@ -361,7 +375,7 @@ hr {
 .banner-image {
     margin-top: 10px;
     background-color: var(--dark-400);
-    height: 90%;
+    height: 350px;
 }   
 .middle-section {
     background-color: var(--light);
@@ -463,13 +477,41 @@ hr {
     gap: 20px;
 }
 .view-more {
+    display: block;
+    color: var(--secondary);
+    font-size: 1.1rem;
     float: right;
+}
+.wrapper-shop {
+    position: relative;
+    padding: 100px 30px;
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    .middle-section {
+        padding: 20px;
+        margin-top: 0px;
+    }
+}
+@media screen and (max-width: 1240px) {
+    .middle-section {
+        padding-left: 40px;
+        padding-right: 40px; 
+    }
+}
+@media screen and (max-width: 958px) {
+    .auction-card {
+        max-width: 220px;
+    }
+    .middle-section {
+        padding-left: 40px;
+        padding-right: 40px;
+    }
 }
 @media screen and (max-width: 600px) {
     .wrapper {
         padding-top: 20px;
-        padding-left: 20px; 
-        padding-right: 20px; 
+        padding-right: 0;
+        padding-left: 0;
     }
     .top-section {
         grid-template-columns: 1fr;
@@ -477,6 +519,7 @@ hr {
     }
     .banner {
         grid-row: 1;
+        height: 250px;
     }
     .banner-image {
         height: 200px;
@@ -489,7 +532,7 @@ hr {
         padding-right: 5px;
     }
     .auction-card {
-        max-width: 200px;
+        max-width: 220px;
         padding: 8px;
         border: 1px solid var(--light-border);
         a {
@@ -498,5 +541,15 @@ hr {
     }
     .auction-img-container {
         height: 150px;
+    }
+    .view-more {
+        text-align: center;
+        margin: 0 auto;
+    }
+}
+@media screen and (max-width: 469px) {
+    .auction-card {
+        max-width: 100%;
+        margin: 0 auto;
     }
 }
