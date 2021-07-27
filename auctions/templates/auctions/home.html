@@ -1,5 +1,7 @@
 {% extends 'auctions/main.html' %}
 
+{% block title %}Home{% endblock %}
+
 {% block content %}
 <div class="wrapper">
     <div class="top-section">
@@ -26,12 +28,13 @@
             Active Sales
         </div><hr>
         <div class="middle-section-content">
-
+        {% if auctions %}
+            {% for auction in auctions %}
             <div class="auction-card">
                 <div class="auction-img-container">
-                    <img class="auction-img" src="https://images-na.ssl-images-amazon.com/images/I/71eS1QzdzsS._SL1200_.jpg" alt="">
+                    <img class="auction-img" src="{{ auction.auctionimage_set.all.first.image.url }}" alt="">
                 </div>
-                <div class="auction-title">Antique Vase | 200 year Old | Udaipur, Rajasthan</div>
+                <div class="auction-title">{{ auction.title }}</div>
                 <div class="auction-detail-box">
                     <div class="detail"><span class="detail-text">Number of Bids</span><span class="detail-value blue">22</span></div>
                     <div class="detail"><span class="detail-text">Opening Price</span><span class="detail-value blue">₹ 400</span></div>
@@ -55,176 +58,10 @@
                     </div>
                 </div>
             </div>
-            <div class="auction-card">
-                <div class="auction-img-container">
-                    <img class="auction-img" src="https://images-na.ssl-images-amazon.com/images/I/71eS1QzdzsS._SL1200_.jpg" alt="">
-                </div>
-                <div class="auction-title">Antique Vase | 200 year Old | Udaipur, Rajasthan</div>
-                <div class="auction-detail-box">
-                    <div class="detail"><span class="detail-text">Number of Bids</span><span class="detail-value blue">22</span></div>
-                    <div class="detail"><span class="detail-text">Opening Price</span><span class="detail-value blue">₹ 400</span></div>
-                    <div class="detail"><span class="detail-text">Current Bid Price</span><span class="detail-value dark bold">₹ 5200</span></div>
-                </div>
-                <a href="#" class="primary-btn">Place Bid</a>
-                <a href="#" class="secondary-btn">View</a>
-                <div class="countdown-timer">
-                    <div class="countdown-title">ENDS IN</div>
-                    <div class="timer">
-                        <div class="timer-values">
-                            <span class="day-value">00</span> :
-                            <span class="hr-value">05</span> :
-                            <span class="min-value">05</span>
-                        </div>
-                        <div class="timer-names">
-                            <span class="time-title">DAY</span>
-                            <span class="time-title">HOUR</span>
-                            <span class="time-title">MIN</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="auction-card">
-                <div class="auction-img-container">
-                    <img class="auction-img" src="https://images-na.ssl-images-amazon.com/images/I/71eS1QzdzsS._SL1200_.jpg" alt="">
-                </div>
-                <div class="auction-title">Antique Vase | 200 year Old | Udaipur, Rajasthan</div>
-                <div class="auction-detail-box">
-                    <div class="detail"><span class="detail-text">Number of Bids</span><span class="detail-value blue">22</span></div>
-                    <div class="detail"><span class="detail-text">Opening Price</span><span class="detail-value blue">₹ 400</span></div>
-                    <div class="detail"><span class="detail-text">Current Bid Price</span><span class="detail-value dark bold">₹ 5200</span></div>
-                </div>
-                <a href="#" class="primary-btn">Place Bid</a>
-                <a href="#" class="secondary-btn">View</a>
-                <div class="countdown-timer">
-                    <div class="countdown-title">ENDS IN</div>
-                    <div class="timer">
-                        <div class="timer-values">
-                            <span class="day-value">00</span> :
-                            <span class="hr-value">05</span> :
-                            <span class="min-value">05</span>
-                        </div>
-                        <div class="timer-names">
-                            <span class="time-title">DAY</span>
-                            <span class="time-title">HOUR</span>
-                            <span class="time-title">MIN</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="auction-card">
-                <div class="auction-img-container">
-                    <img class="auction-img" src="https://images-na.ssl-images-amazon.com/images/I/71eS1QzdzsS._SL1200_.jpg" alt="">
-                </div>
-                <div class="auction-title">Antique Vase | 200 year Old | Udaipur, Rajasthan</div>
-                <div class="auction-detail-box">
-                    <div class="detail"><span class="detail-text">Number of Bids</span><span class="detail-value blue">22</span></div>
-                    <div class="detail"><span class="detail-text">Opening Price</span><span class="detail-value blue">₹ 400</span></div>
-                    <div class="detail"><span class="detail-text">Current Bid Price</span><span class="detail-value dark bold">₹ 5200</span></div>
-                </div>
-                <a href="#" class="primary-btn">Place Bid</a>
-                <a href="#" class="secondary-btn">View</a>
-                <div class="countdown-timer">
-                    <div class="countdown-title">ENDS IN</div>
-                    <div class="timer">
-                        <div class="timer-values">
-                            <span class="day-value">00</span> :
-                            <span class="hr-value">05</span> :
-                            <span class="min-value">05</span>
-                        </div>
-                        <div class="timer-names">
-                            <span class="time-title">DAY</span>
-                            <span class="time-title">HOUR</span>
-                            <span class="time-title">MIN</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="auction-card">
-                <div class="auction-img-container">
-                    <img class="auction-img" src="https://images-na.ssl-images-amazon.com/images/I/71eS1QzdzsS._SL1200_.jpg" alt="">
-                </div>
-                <div class="auction-title">Antique Vase | 200 year Old | Udaipur, Rajasthan</div>
-                <div class="auction-detail-box">
-                    <div class="detail"><span class="detail-text">Number of Bids</span><span class="detail-value blue">22</span></div>
-                    <div class="detail"><span class="detail-text">Opening Price</span><span class="detail-value blue">₹ 400</span></div>
-                    <div class="detail"><span class="detail-text">Current Bid Price</span><span class="detail-value dark bold">₹ 5200</span></div>
-                </div>
-                <a href="#" class="primary-btn">Place Bid</a>
-                <a href="#" class="secondary-btn">View</a>
-                <div class="countdown-timer">
-                    <div class="countdown-title">ENDS IN</div>
-                    <div class="timer">
-                        <div class="timer-values">
-                            <span class="day-value">00</span> :
-                            <span class="hr-value">05</span> :
-                            <span class="min-value">05</span>
-                        </div>
-                        <div class="timer-names">
-                            <span class="time-title">DAY</span>
-                            <span class="time-title">HOUR</span>
-                            <span class="time-title">MIN</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="auction-card">
-                <div class="auction-img-container">
-                    <img class="auction-img" src="https://images-na.ssl-images-amazon.com/images/I/71eS1QzdzsS._SL1200_.jpg" alt="">
-                </div>
-                <div class="auction-title">Antique Vase | 200 year Old | Udaipur, Rajasthan</div>
-                <div class="auction-detail-box">
-                    <div class="detail"><span class="detail-text">Number of Bids</span><span class="detail-value blue">22</span></div>
-                    <div class="detail"><span class="detail-text">Opening Price</span><span class="detail-value blue">₹ 400</span></div>
-                    <div class="detail"><span class="detail-text">Current Bid Price</span><span class="detail-value dark bold">₹ 5200</span></div>
-                </div>
-                <a href="#" class="primary-btn">Place Bid</a>
-                <a href="#" class="secondary-btn">View</a>
-                <div class="countdown-timer">
-                    <div class="countdown-title">ENDS IN</div>
-                    <div class="timer">
-                        <div class="timer-values">
-                            <span class="day-value">00</span> :
-                            <span class="hr-value">05</span> :
-                            <span class="min-value">05</span>
-                        </div>
-                        <div class="timer-names">
-                            <span class="time-title">DAY</span>
-                            <span class="time-title">HOUR</span>
-                            <span class="time-title">MIN</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="auction-card">
-                <div class="auction-img-container">
-                    <img class="auction-img" src="https://images-na.ssl-images-amazon.com/images/I/71eS1QzdzsS._SL1200_.jpg" alt="">
-                </div>
-                <div class="auction-title">Antique Vase | 200 year Old | Udaipur, Rajasthan</div>
-                <div class="auction-detail-box">
-                    <div class="detail"><span class="detail-text">Number of Bids</span><span class="detail-value blue">22</span></div>
-                    <div class="detail"><span class="detail-text">Opening Price</span><span class="detail-value blue">₹ 400</span></div>
-                    <div class="detail"><span class="detail-text">Current Bid Price</span><span class="detail-value dark bold">₹ 5200</span></div>
-                </div>
-                <a href="#" class="primary-btn">Place Bid</a>
-                <a href="#" class="secondary-btn">View</a>
-                <div class="countdown-timer">
-                    <div class="countdown-title">ENDS IN</div>
-                    <div class="timer">
-                        <div class="timer-values">
-                            <span class="day-value">00</span> :
-                            <span class="hr-value">05</span> :
-                            <span class="min-value">05</span>
-                        </div>
-                        <div class="timer-names">
-                            <span class="time-title">DAY</span>
-                            <span class="time-title">HOUR</span>
-                            <span class="time-title">MIN</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
+            {% endfor %}
+        {% else %}
+        <p>No Auctions Found</p>
+        {% endif %}
         </div>
     </div>
     <a href="{% url 'shop' %}" class="view-more">View More</a>
