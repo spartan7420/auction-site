@@ -1,0 +1,57 @@
+{% extends 'auctions/main.html' %}
+{% load static %}
+{% block content %}
+<div class="wrapper-dashboard">
+    <div class="dashboard-container">
+        <div class="title">
+            Profile
+        </div><hr>
+        <div class="profile-top-section">
+            <div class="profile-username-container">
+                <div class="profile-username">John Doe</div>
+                <a class="edit-profile-btn" href=""><i class="fas fa-edit"></i>Edit Profile</a>
+            </div>
+            <div class="profile-scores">
+                <div class="score-card green-card">
+                    <div class="score-title">Reputation</div>
+                    <div class="score-value">512,02</div>
+                </div>
+                <div class="score-card blue-card">
+                    <div class="score-title">Items Sold</div>
+                    <div class="score-value">45</div>
+                </div>
+                <div class="score-card grey-card">
+                    <div class="score-title">Auctions Won</div>
+                    <div class="score-value">102</div>
+                </div>
+            </div>
+        </div>
+        <div class="profile-detail-section">
+            <div class="profile-detail">
+                <div class="profile-detail-title">Address</div>
+                <div class="profile-detail-value">B-57, Jamestown, ABS</div>
+            </div>
+            <div class="profile-detail">
+                <div class="profile-detail-title">Phone Number</div>
+                <div class="profile-detail-value">+91 XXX22XXXX</div>
+            </div>
+            <div class="profile-detail">
+                <div class="profile-detail-title">City</div>
+                <div class="profile-detail-value">New Delhi</div>
+            </div>
+            <div class="profile-detail">
+                <div class="profile-detail-title">State</div>
+                <div class="profile-detail-value">Delhi</div> 
+            </div>
+            <div class="profile-detail">
+                <div class="profile-detail-title">Country</div>
+                <div class="profile-detail-value">India</div>
+            </div>
+            <div class="profile-detail">
+                <div class="profile-detail-title">User ID</div>
+                <div class="profile-detail-value">0112X</div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

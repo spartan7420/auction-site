@@ -15,3 +15,13 @@ def auctiondetail(request, auction_id):
     title = "Details"
     context = {'title':title}
     return render(request, 'auctions/auctiondetail.html', context)
+
+def dashboard(request):
+    title = "Dashboard"
+    context = {'title':title}
+    return render(request, 'auctions/dashboard.html', context)
+
+def profile(request):
+    title = "Profile"
+    context = {'title':title}
+    return render(request, 'auctions/profile.html', context)

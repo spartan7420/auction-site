@@ -1,3 +1,4 @@
+// Code for navigation bar
 let burger = document.getElementById('burger');
 let nav = document.getElementById('nav-links');
 

@@ -1,8 +1,134 @@
 {% extends 'auctions/main.html' %}
-
+{% load static %}
 {% block content %}
-<div class="wrapper">
-    
+<div class="wrapper-detail">
+    <div class="detail-container">
+        <div class="parameters">
+            <div class="parameter">
+                <div class="param-title">Product ID</div>
+                <div class="param-value">0111X</div>
+            </div>
+            <div class="parameter">
+                <div class="param-title">Start Time</div>
+                <div class="param-value">26 July 2021, 12:30 PM</div>
+            </div>
+            <div class="parameter">
+                <div class="param-title">End Time</div>
+                <div class="param-value">27 July 2021, 12:30 PM</div>
+            </div>
+            <div class="parameter">
+                <div class="param-title">Status</div>
+                <div class="param-value green">Unsold</div>
+            </div>
+            <a class="bid-history-btn" href="">
+                View Bidding History
+            </a>
+        </div>
+
+        <div class="product-info">
+            <div class="product-gallery">
+                <div id="slide-wrapper">
+                    <div id="slider">
+                        <img class="thumbnail active" src="https://images-na.ssl-images-amazon.com/images/I/71eS1QzdzsS._SL1200_.jpg">
+                        <img class="thumbnail" src="https://images-na.ssl-images-amazon.com/images/I/71z3uDdJGoS._SL1200_.jpg">
+                        <img class="thumbnail" src="https://www.wudbox.in/wp-content/uploads/2017/07/SH00045-1-1-scaled.jpg">
+                
+                    </div>
+                </div>
+                <div id="img-container">
+                    <div id="lens"></div>
+                    <img id=featured src="https://images-na.ssl-images-amazon.com/images/I/71eS1QzdzsS._SL1200_.jpg">
+                </div>
+            </div>
+            <div class="product-details">
+                <div class="auction-title">Antique Vase | 200 year Old | Udaipur, Rajasthan</div>
+
+                <div class="countdown-timer">
+                    <div class="countdown-title">ENDS IN</div>
+                    <div class="timer">
+                        <div class="timer-values">
+                            <span class="day-value">00</span> :
+                            <span class="hr-value">05</span> :
+                            <span class="min-value">05</span>
+                        </div>
+                        <div class="timer-names">
+                            <span class="time-title">DAY</span>
+                            <span class="time-title">HOUR</span>
+                            <span class="time-title">MIN</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="auction-detail-box">
+                    <div class="detail"><span class="detail-text">Number of Bids</span><span class="detail-value blue">22</span></div>
+                    <div class="detail"><span class="detail-text">Opening Price</span><span class="detail-value blue">₹
+                            400</span></div>
+                    <div class="detail"><span class="detail-text">Current Bid Price</span><span class="detail-value dark bold">₹
+                            5200</span></div>
+                </div>
+                <div class="btn-container">
+                    <a href="#" class="primary-btn">Place Bid</a>
+                    <a href="#" class="secondary-btn green-btn">Buy</a>
+                </div>
+
+            </div>
+        </div><hr>
+        <div class="parameters-small-screen">
+            <div class="parameter">
+                <div class="param-title">Product ID</div>
+                <div class="param-value">0111X</div>
+            </div>
+            <div class="parameter">
+                <div class="param-title">Start Time</div>
+                <div class="param-value">26 July 2021, 12:30 PM</div>
+            </div>
+            <div class="parameter">
+                <div class="param-title">End Time</div>
+                <div class="param-value">27 July 2021, 12:30 PM</div>
+            </div>
+            <div class="parameter">
+                <div class="param-title">Status</div>
+                <div class="param-value green">Unsold</div>
+            </div>
+            <a class="bid-history-btn" href="">
+                View Bidding History
+            </a>
+        </div>
+        <div class="product-desc">
+            <div class="desc-title">Product Description</div>
+            <div class="desc-content">
+                It is a long established fact that a reader will be distracted by the readable content of a page when looking at its
+                layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using
+                'Content here, content here', making it look like readable English. Many desktop publishing packages and web page
+                editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites
+                still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose
+                (injected humour and the like).
+            </div>
+        </div>
+        <div class="product-desc">
+            <div class="desc-title">Product Condition</div>
+            <div class="desc-content">
+                The product is 250 years old but it’s still in good condtion.
+            </div>
+        </div>
+        <div class="product-desc">
+            <div class="desc-title">Seller Information</div>
+            <div class="desc-content">
+                Seller ID: 9023Xaa3422
+                Company Name: ABC Auction Seller
+                Contact Email: abcauction@yahoo.com
+            </div>
+        </div>
+        <div class="product-desc">
+            <div class="desc-title">More Details</div>
+            <div class="desc-content">
+                Model: 34FFF3
+                Year: 1705
+                Original Creator: Yusiko Gorang
+                More Information: https://www.ancientfiles.com
+            </div>
+        </div>
+    </div>
 </div>
+<script src="{% static 'auctions/slider.js' %}"></script>
 
 {% endblock %}
