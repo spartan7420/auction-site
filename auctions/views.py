@@ -9,6 +9,16 @@ def home(request):
     }
     return render(request, 'auctions/home.html', context)
 
+def loginPage(request):
+    context = {
+    }
+    return render(request, 'auctions/login.html', context)
+
+def registerPage(request):
+    context = {
+    }
+    return render(request, 'auctions/register.html', context)
+
 def shop(request):
     auctions = Auction.objects.all() 
     context = {
