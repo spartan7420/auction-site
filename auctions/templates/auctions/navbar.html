@@ -35,13 +35,23 @@
         <li class="your-bids">
             <a href="">Your Bids</a>
             <span class="bid-count">5</span></li>
-        <li class="dropdown">Account
+        {% if user.is_authenticated %}
+        <li class="dropdown">{{ request.user }}
             <ul class="nav-dropdown">
-                <li><a href="">Login</a></li>
-                <li><a href="">Signup</a></li>
+                <li><a href="">Dashboard</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
             </ul>
             <i class="fas fa-chevron-down"></i>
         </li>
+        {% else %}
+        <li class="dropdown">Account
+            <ul class="nav-dropdown">
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Signup</a></li>
+            </ul>
+            <i class="fas fa-chevron-down"></i>
+        </li>
+        {% endif %}
 
     </ul>
     <div class="burger" id="burger">
