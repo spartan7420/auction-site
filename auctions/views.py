@@ -3,18 +3,26 @@ from .models import *
 
 # Create your views here.
 def home(request):
-    auctions = Auction.objects.all() 
+    auctions = Auction.objects.all()[:6]
     context = {
         'auctions': auctions
     }
     return render(request, 'auctions/home.html', context)
 
 def shop(request):
-    context = {}
+    auctions = Auction.objects.all() 
+    context = {
+        'auctions': auctions
+    }
     return render(request, 'auctions/shop.html', context)
 
 def auctiondetail(request, auction_id):
-    context = {}
+    auction = Auction.objects.get(pk=auction_id)
+
+    context = {
+        'auction': auction,
+    }
+
     return render(request, 'auctions/auctiondetail.html', context)
 
 def dashboard(request):

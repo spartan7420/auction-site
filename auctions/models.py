@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import CheckConstraint, Q, F
 from django.contrib.auth.models import User
+from django.utils import timezone
 import pytz
 
 # Create your models here.
@@ -33,7 +34,8 @@ class Auction(models.Model):
     STATUS = (
         ('Scheduled', 'Scheduled'),
         ('Unsold', 'Unsold'),
-        ('Sold', 'Sold')
+        ('Sold', 'Sold'),
+        ('Ended', 'Ended')
     )
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     category = models.CharField(max_length=200, null=True, choices=CATEGORY)
@@ -45,6 +47,61 @@ class Auction(models.Model):
     status = models.CharField(max_length=200, choices=STATUS)
     opening_price = models.PositiveIntegerField(null=True)
     final_price = models.PositiveIntegerField(blank=True, null=True) 
+
+    def time_left(self):
+        now = timezone.now()
+        if(self.end_date > now):
+            time_left = self.end_date - now   
+            #Extract days, hours, min from timedelta object
+            time_left = str(time_left).split(',')
+            if len(time_left) == 2:
+                day = time_left[0].split(' ')[0].strip()
+                clock = time_left[1].split(':')
+                hour = clock[0].strip()
+                min = clock[1].strip()
+                sec = clock[2][:2].strip()
+                
+                if int(day) < 10 and int(day) >= 0:
+                    day = '0' + day 
+                else:
+                    day = '00'
+                if int(hour) < 10:
+                    hour = '0' + hour 
+
+                result = {
+                    'day': day,
+                    'hour': hour,
+                    'min': min,
+                    'sec': sec
+                }
+                return result
+            elif len(time_left) == 1:
+                clock = time_left[0].split(':')
+                hour = clock[0].strip()
+                min = clock[1].strip()
+                sec = clock[2][:2].strip()
+                day = '00'
+
+                if int(hour) < 10:
+                    hour = '0' + hour 
+
+                result = {
+                    'day': day,
+                    'hour': hour,
+                    'min': min,
+                    'sec': sec
+                }
+                return result  
+        else:
+            result = {
+                'day': '00',
+                'hour': '00',
+                'min': '00',
+                'sec': '00'
+            }
+            return result   
+
+
 
     def __str__(self):
         return str(self.title)

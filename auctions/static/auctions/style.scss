@@ -467,7 +467,6 @@ footer {
     height: 100%;
     display: grid;
     grid-template-columns: 1fr 3fr;
-    border: 1px solid var(--light-border);
 }
 .category-list-title {
     font-size: 20px;
@@ -552,6 +551,9 @@ hr {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+.sec {
+    font-size: 0.7rem !important;
 }
 .time-title, .countdown-title {
     font-size: 0.8rem;
@@ -690,6 +692,9 @@ hr {
     }
 }
 @media screen and (max-width: 914px) {
+    .product-details {
+        margin-top: 0 !important;
+    }
     .wrapper-dashboard {
         padding: 20px 60px;
         min-height: 100vh;
@@ -709,8 +714,15 @@ hr {
     }
     .bid-history-btn {
         display: block;
-        margin: 0 auto;
+        margin: 20px auto;
     }
+}
+.auction-status {
+    text-align: center;
+    padding: 20px 0;
+    text-transform: uppercase;
+    color: var(--dark-400);
+    background-color: var(--light-border);
 }
 @media screen and (max-width: 815px) {
     .wrapper-dashboard {
@@ -732,7 +744,7 @@ hr {
 .product-details {
     margin-top: 20px;
     .auction-title {
-        font-size: 1.4rem;
+        font-size: 1.2rem;
         color: var(--dark-600);
     }
     .btn-container {
@@ -745,7 +757,7 @@ hr {
         margin: 20px 0;
     }
     .countdown-title {
-        font-size: 1.2rem;
+        font-size: 1rem;
         font-weight: 300;
     }
     .timer {
@@ -756,16 +768,16 @@ hr {
     .timer-values {
         font-size: 1.6rem;
         display: flex;
-        gap: 20px;
+        gap: 10px;
     }
     .timer-names {
         display: flex;
-        gap: 35px;
+        gap: 20px;
         font-weight: 300;
+        margin-right: 20px;
     }
-
     .time-title {
-        font-size: 1.2rem !important;
+        font-size: 0.9rem !important;
     }
     .auction-detail-box {
         line-height: 2em;
@@ -960,10 +972,9 @@ hr {
 }
 .product-gallery {
     display: flex;
-    justify-content: space-between;
-    border: 1px solid var(--light-border);
+    justify-content: space-around;
     margin-top: 20px;
-    padding: 10px;
+    padding: 10px 0 0 0;
 }
 #slide-wrapper{
 	margin-top: 15px;
@@ -1013,11 +1024,11 @@ hr {
 #img-container{
 	z-index: 1;
     display: block;
-    margin: 20px 0;
-	max-width: 500px;
+    text-align: center;
+    margin: 0px 0;
+    text-align: center;
 	position: relative;
 }
-
 #lens{
 	z-index: 2;
 	position: absolute;
