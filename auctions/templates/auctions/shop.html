@@ -34,40 +34,64 @@
                     </div>
                     <div class="detail"><span class="detail-text">Opening Price</span><span class="detail-value blue">₹ 400</span>
                     </div>
-                    <div class="detail"><span class="detail-text">Current Bid Price</span><span class="detail-value dark bold">₹
-                            5200</span></div>
+                    <div class="detail"><span class="detail-text">Current Bid Price</span>
+                        <span class="detail-value dark bold">
+                            ₹ {% if auction.current_bid_price %}
+                            {{ auction.current_bid_price }}
+                            {% else %}
+                            {{ auction.opening_price }}
+                            {% endif %}
+                        
+                        </span></div>
                 </div>
-                {% if auction.status != 'Ended' and auction.status != 'Sold' %}
-                <a href="#" class="primary-btn">Place Bid</a>
-                {% endif %}
-                <a href="{% url 'auctiondetail' auction.id %}" class="secondary-btn">View</a>
-                {% if auction.status != 'Ended' and auction.status != 'Sold' %}
-                <div class="countdown-timer">
-                    <div class="countdown-title">ENDS IN</div>
-                    <div class="timer">
-                        <div class="timer-values">
-                            <span class="day-value">{{ auction.time_left.day }}</span> :
-                            <span class="hr-value">{{ auction.time_left.hour }}</span> :
-                            <span class="min-value">{{ auction.time_left.min }}</span>
-                            <span class="sec-value sec">{{ auction.time_left.sec }}</span>
-                        </div>
-                        <div class="timer-names">
-                            <span class="time-title">DAY</span>
-                            <span class="time-title">HOUR</span>
-                            <span class="time-title">MIN</span>
-                        </div>
+            {% if not auction.is_sold and auction.is_started %}
+            <a href="{% url 'placebid' auction.id %}" class="primary-btn">Place Bid</a>
+            {% endif %}
+            <a href="{% url 'auctiondetail' auction.id %}" class="secondary-btn">View</a>
+            {% if not auction.is_sold and auction.is_started %}
+            <div class="countdown-timer">
+                <div class="countdown-title">ENDS IN</div>
+                <div class="timer">
+                    <div class="timer-values">
+                        <span class="day-value">{{ auction.time_left.day }}</span> :
+                        <span class="hr-value">{{ auction.time_left.hour }}</span> :
+                        <span class="min-value">{{ auction.time_left.min }}</span>
+                        <span class="sec-value sec">{{ auction.time_left.sec }}</span>
+                    </div>
+                    <div class="timer-names">
+                        <span class="time-title">DAY</span>
+                        <span class="time-title">HOUR</span>
+                        <span class="time-title">MIN</span>
                     </div>
                 </div>
-                {% else %}
-                <p class="auction-status">{{ auction.status }}</p>
-                {% endif %}
+            </div>
+            {% elif auction.is_scheduled %}
+            <p class="auction-status">Scheduled</p>
+            <div class="countdown-timer">
+                <div class="countdown-title">STARTS IN</div>
+                <div class="timer">
+                    <div class="timer-values">
+                        <span class="day-value">{{ auction.time_until_start.day }}</span> :
+                        <span class="hr-value">{{ auction.time_until_start.hour }}</span> :
+                        <span class="min-value">{{ auction.time_until_start.min }}</span>
+                        <span class="sec-value sec">{{ auction.time_until_start.sec }}</span>
+                    </div>
+                    <div class="timer-names">
+                        <span class="time-title">DAY</span>
+                        <span class="time-title">HOUR</span>
+                        <span class="time-title">MIN</span>
+                    </div>
+                </div>
+            </div>
+            {% elif auction.is_ended %}
+            <p class="auction-status">Ended</p>
+            {% endif %}
             </div>
             {% endfor %}
             {% else %}
             <p>No Auctions Found</p>
             {% endif %}
-
-        </div>
+            </div>
     </div>
 </div>
 {% endblock %}

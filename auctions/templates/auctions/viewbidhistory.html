@@ -1,0 +1,73 @@
+{% extends 'auctions/main.html' %}
+{% load static %}
+{% block content %}
+<div class="wrapper-detail">
+    <div class="detail-container">
+        <div class="parameters">
+            <div class="parameter">
+                <div class="param-title">Product ID</div>
+                <div class="param-value">{{ auction.id }}</div>
+            </div>
+            <div class="parameter">
+                <div class="param-title">Start Time</div>
+                <div class="param-value">{{ auction.start_date }}</div>
+            </div>
+            <div class="parameter">
+                <div class="param-title">End Time</div>
+                <div class="param-value">{{ auction.end_date }}</div>
+            </div>
+            <div class="parameter">
+                <div class="param-title">Status</div>
+                <div class="param-value green">{{ auction.status }}</div>
+            </div>
+            <a class="bid-history-btn" href="">
+                View Bidding History
+            </a>
+        </div>
+
+
+        <hr>
+        <div class="parameters-small-screen">
+            <div class="parameter">
+                <div class="param-title">Product ID</div>
+                <div class="param-value">{{ auction.id }}</div>
+            </div>
+            <div class="parameter">
+                <div class="param-title">Start Time</div>
+                <div class="param-value">{{ auction.start_date }}</div>
+            </div>
+            <div class="parameter">
+                <div class="param-title">End Time</div>
+                <div class="param-value">{{ auction.start_date }}</div>
+            </div>
+            <div class="parameter">
+                <div class="param-title">Status</div>
+                <div class="param-value green">{{ auction.status }}</div>
+            </div>
+            <a class="bid-history-btn" href="">
+                View Bidding History
+            </a>
+        </div>
+        <div class="product-desc">
+            <div class="desc-title">Product Description</div>
+            <div class="desc-content">
+                {{ auction.description }}
+            </div>
+        </div>
+        <div class="product-desc">
+            <div class="desc-title">Seller Information</div>
+            <div class="desc-content">
+                Seller ID: {{ auction.user_id }}
+            </div>
+        </div>
+        <div class="product-desc">
+            <div class="desc-title">More Details</div>
+            <div class="desc-content">
+                {{ auction.details }}
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{% static 'auctions/slider.js' %}"></script>
+
+{% endblock %}

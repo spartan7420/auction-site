@@ -10,5 +10,7 @@ urlpatterns = [
     path('<int:auction_id>/auctiondetail/', views.auctiondetail, name='auctiondetail'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('profile/', views.profile, name='profile'),
+    path('<int:auction_id>/placebid/', views.placebid, name='placebid'),
+    path('<int:auction_id>/bidhistory/', views.bidhistory, name='bidhistory'),
 ]
 

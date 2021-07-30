@@ -101,57 +101,6 @@ class Auction(models.Model):
             }
             return result   
 
-    def time_until_start(self):
-        now = timezone.now()
-        if(self.end_date > now):
-            time_left = self.start_date - now  
-            #Extract days, hours, min from timedelta object
-            time_left = str(time_left).split(',')
-            if len(time_left) == 2:
-                day = time_left[0].split(' ')[0].strip()
-                clock = time_left[1].split(':')
-                hour = clock[0].strip()
-                min = clock[1].strip()
-                sec = clock[2][:2].strip()
-                
-                if int(day) < 10 and int(day) >= 0:
-                    day = '0' + str(day) 
-                if int(hour) < 10:
-                    hour = '0' + str(hour) 
-
-                result = {
-                    'day': day,
-                    'hour': hour,
-                    'min': min,
-                    'sec': sec
-                }
-                return result
-            elif len(time_left) == 1:
-                clock = time_left[0].split(':')
-                hour = clock[0].strip()
-                min = clock[1].strip()
-                sec = clock[2][:2].strip()
-                day = '00'
-
-                if int(hour) < 10:
-                    hour = '0' + str(hour) 
-
-                result = {
-                    'day': day,
-                    'hour': hour,
-                    'min': min,
-                    'sec': sec
-                }
-                return result  
-        else:
-            result = {
-                'day': '00',
-                'hour': '00',
-                'min': '00',
-                'sec': '00'
-            }
-            return result   
-
     def current_bid_price(self):
         return self.bid_set.all().aggregate(Max('amount'))['amount__max']
 
@@ -166,7 +115,7 @@ class Auction(models.Model):
         """
         Returns True if the auction is live
         """
-        return self.start_date <= timezone.now() <= self.end_date
+        return self.end_date <= timezone.now() <= self.end_date
 
     def is_sold(self):
         """

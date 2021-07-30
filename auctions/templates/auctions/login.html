@@ -16,18 +16,38 @@
 </head>
 
 <body>
-    {% for message in messages %}
-        <p>{{ message }}</p>
-    {% endfor %}
-    <h1>Login</h1>
 
-    <form action="" method="POST">
-        {% csrf_token %}
-        <input type="text" name="username" placeholder="Username">
-        <input type="password" name="password" placeholder="Password">
-        <input type="submit" value="Login">
-    </form>
-    <p>New Here? <a href="{% url 'register' %}">Create an account</a></p>
+
+    <div class="wrapper-account">
+        <div class="form-container">
+            <div class="site-title">Auction Crow</div>
+            <div class="form-account">
+                <h1>Login</h1>
+                {% if messages %}
+                    <div class="message">
+                        {% for message in messages %}
+                        <p>{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    <label for="username">Username</label>
+                    <input type="text" name="username">
+                    <label for="password">Password</label>
+                    <input type="password" name="password">
+                    <input type="hidden" name="next" value="{{ request.GET.next }}" />
+                    <input type="submit" value="Login">
+                </form>
+                <p>New Here? <a href="{% url 'register' %}">Create an account</a></p>
+            </div>
+            
+        </div>
+        <div class="banner-account">
+        
+        </div>
+    </div>
+
 
 </body>
 </html>

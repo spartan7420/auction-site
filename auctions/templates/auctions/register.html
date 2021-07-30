@@ -14,25 +14,49 @@
     <title>Register</title>
 </head>
 <body>
-    <h1>Register</h1>
+    <div class="wrapper-account">
+        <div class="form-container">
 
-    <form action="" method="POST">
-        {% csrf_token %}
+            <div class="form-account">
+                <h1>Register</h1>
+                {% if form.errors %}
+                    <div class="form-error">
+                        {% for error in form.username.errors %}
+                            {{ error }}<br>
+                        {% endfor %}
+                        {% for error in form.email.errors %}
+                            {{ error }}<br>
+                        {% endfor %}
+                        {% for error in form.passoword1.errors %}
+                            {{ error }}<br>
+                        {% endfor %}
+                        {% for error in form.password2.errors %}
+                            {{ error }}<br>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+                <form action="" method="POST">
+                    {% csrf_token %}
+                
+                    <label for="username">Username</label>
+                    <input type="text" name="username">
+                    <label for="email">Email</label>
+                    <input type="text" name="email">
+                    <label for="password1">Password</label>
+                    <input type="password" name="password1">
+                    <label for="password2">Confirm Password</label>
+                    <input type="password" name="password2">
+                    <input type="submit" value="Register">
+                
+                </form>
+                <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
+            </div>
+        </div>
+        <div class="banner-account">
+        
+        </div>
 
-        {{ form.username.label }}
-        {{ form.username }}
+    </div>
 
-        {{ form.email.label }}
-        {{ form.email }}
-
-        {{ form.password1.label }}
-        {{ form.password1 }}
-
-        {{ form.password2.label }}
-        {{ form.password2 }}
-
-        <input type="submit" value="Register">
-    </form>
-    <p>Already have an account? <a href="{% url 'login' %}">Login</a></p>
 </body>
 </html>
