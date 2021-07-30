@@ -1148,3 +1148,16 @@ hr {
         color: var(--secondary);
     } 
 }
+.wrapper-bid-table {
+    position: relative;
+    min-height: 100vh;
+    background-color: var(--light);
+    padding: 100px 100px;
+}
+@media screen and (max-width: 600px) {
+    .wrapper-bid-table {
+        padding-top: 20px;
+        padding-right: 0;
+        padding-left: 0;
+    }
+}
