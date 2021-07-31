@@ -20,7 +20,7 @@
                 <div class="param-title">Status</div>
                 <div class="param-value green">{{ auction.status }}</div>
             </div>
-            <a class="bid-history-btn" href="">
+            <a class="bid-history-btn" href="{% url 'bidhistory' auction.id %}">
                 View Bidding History
             </a>
         </div>
@@ -126,7 +126,7 @@
                 <div class="param-title">Status</div>
                 <div class="param-value green">{{ auction.status }}</div>
             </div>
-            <a class="bid-history-btn" href="">
+            <a class="bid-history-btn" href="{% url 'bidhistory' auction.id %}">
                 View Bidding History
             </a>
         </div>

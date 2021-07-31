@@ -1,0 +1,20 @@
+{% extends 'auctions/main.html' %}
+
+{% block title %}Edit Auction{% endblock %}
+
+{% load static %}
+{% block content %}
+<div class="wrapper">
+    <div class="title">
+        Edit Auction
+    </div>
+    <hr>
+    <form action="" class="styled-form shrink form-center" method="POST">
+        {% csrf_token %}
+        {{ form }}
+
+        <input type="submit" value="Save">
+        <a href="{% url 'yourauctions' %}" class="cancel">Cancel</a>
+    </form>
+</div>
+{% endblock %}

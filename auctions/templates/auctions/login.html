@@ -36,7 +36,6 @@
                     <input type="text" name="username">
                     <label for="password">Password</label>
                     <input type="password" name="password">
-                    <input type="hidden" name="next" value="{{ request.GET.next }}" />
                     <input type="submit" value="Login">
                 </form>
                 <p>New Here? <a href="{% url 'register' %}">Create an account</a></p>

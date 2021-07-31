@@ -1,0 +1,21 @@
+{% extends 'auctions/main.html' %}
+
+{% block title %}Edit Profile{% endblock %} 
+
+{% load static %}
+{% block content %}
+<div class="wrapper">
+    <div class="title">
+        Edit Profile
+    </div>
+    <hr>
+    <form action="" class="styled-form shrink form-center" method="POST">
+        {% csrf_token %}
+        {{ form }}
+        <label for="id_date_of_birth">Date of Birth</label>
+        <input type="date" name="date_of_birth" id="id_date_of_birth">
+        <input type="submit" value="Save">
+        <a href="{% url 'profile' %}" class="cancel">Cancel</a>
+    </form>
+</div>
+{% endblock %}

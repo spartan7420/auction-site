@@ -2,6 +2,7 @@ from datetime import datetime
 from django.db import models
 from django.db.models import CheckConstraint, Q, F
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
 from django.utils import timezone
 from django.db.models import Max
 import pytz
@@ -9,19 +10,38 @@ import pytz
 # Create your models here.
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
-    first_name = models.CharField(max_length=200, blank=True)
-    last_name = models.CharField(max_length=200, blank=True)
-    phone = models.CharField(max_length=200, blank=True)
-    address = models.CharField(max_length=400, blank=True)
-    city = models.CharField(max_length=200, blank=True)
-    state = models.CharField(max_length=200, blank=True)
-    pincode = models.CharField(max_length=200, blank=True)
-    country = models.CharField(max_length=2, choices=pytz.country_names.items())
-    date_of_birth = models.DateField()
+    first_name = models.CharField(max_length=200, blank=True, null=True)
+    last_name = models.CharField(max_length=200, blank=True, null=True)
+    phone = models.CharField(max_length=200, blank=True, null=True)
+    address = models.CharField(max_length=400, blank=True, null=True)
+    city = models.CharField(max_length=200, blank=True, null=True)
+    state = models.CharField(max_length=200, blank=True, null=True)
+    pincode = models.CharField(max_length=200, blank=True, null=True)
+    country = models.CharField(max_length=2, choices=pytz.country_names.items(), null=True)
+    date_of_birth = models.DateField(null=True)
     reputation = models.IntegerField(default=0)
 
+    def auction_count(self):
+        return Auction.objects.filter(user=self.user).count()
+    
+    def win_count(self):
+        return Winner.objects.filter(user=self.user).count()
+
     def __str__(self):
-        return str(self.first_name)
+        return str(self.user)
+
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)
+
+post_save.connect(create_profile, sender=User)
+
+def update_profile(sender, instance, created, **kwargs):
+    if created == False:
+        instance.userprofile.save()
+
+post_save.connect(update_profile, sender=User)
+
 
 class Auction(models.Model):
     CATEGORY = (
@@ -179,7 +199,7 @@ class Auction(models.Model):
         Returns True of the value of current date-time is 
         greater than the end_date field
         """
-        return timezone.now() > self.end_date
+        return (timezone.now() > self.end_date)
 
     def __str__(self):
         return str(self.title)

@@ -12,5 +12,10 @@ urlpatterns = [
     path('profile/', views.profile, name='profile'),
     path('<int:auction_id>/placebid/', views.placebid, name='placebid'),
     path('<int:auction_id>/bidhistory/', views.bidhistory, name='bidhistory'),
+    path('createnewauction/', views.createnewauction, name='createnewauction'),
+    path('editprofile/', views.editprofile, name='editprofile'),
+    path('yourauctions/', views.yourauctions, name='yourauctions'),
+    path('<int:auction_id>/editauction/', views.editauction, name='editauction'),
+    path('<int:auction_id>/deleteauction/', views.deleteauction, name='deleteauction'),
 ]
 

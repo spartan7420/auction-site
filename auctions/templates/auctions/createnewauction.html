@@ -1,0 +1,39 @@
+{% extends 'auctions/main.html' %}
+{% load static %}
+{% block title %}Create a New Auction{% endblock %}
+
+{% block content %}
+<div class="wrapper">
+    <div class="title">
+        Create New Auction
+    </div>
+    <hr>
+    <form action="" class="styled-form shrink form-center" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        {{ form }}
+<!-- 
+        <label for="id_start_date">Start Date</label>
+        <input type="text" name="start_date" id="id_start_date">
+
+        <label for="id_end_date">End Date</label>
+        <input type="text" name="end_date" id="id_end_date"> -->
+
+        <label for="image">Upload Product Images</label>
+        <input type="file" multiple id="image" name="image">
+        <input type="submit" value="Create">
+        <a href="{% url 'dashboard' %}" class="cancel">Cancel</a>
+    </form>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{% static 'auctions/jquery.datetimepicker.css' %}" />
+<script src="{% static 'auctions/jquery.datetimepicker.full.min.js' %}"></script>
+<script>
+    jQuery('#id_start_date').datetimepicker({
+        format: 'Y-m-d H:i'
+    });
+    jQuery('#id_end_date').datetimepicker({
+        format: 'Y-m-d H:i'
+    });
+</script>
+{% endblock %}

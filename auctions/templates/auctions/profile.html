@@ -11,48 +11,56 @@
         </div><hr>
         <div class="profile-top-section">
             <div class="profile-username-container">
-                <div class="profile-username">John Doe</div>
-                <a class="edit-profile-btn" href=""><i class="fas fa-edit"></i>Edit Profile</a>
+                <div class="profile-username">{{ profile.user.username }}</div>
+                <a class="edit-profile-btn" href="{% url 'editprofile' %}"><i class="fas fa-edit"></i>Edit Profile</a>
             </div>
             <div class="profile-scores">
                 <div class="score-card green-card">
                     <div class="score-title">Reputation</div>
-                    <div class="score-value">512,02</div>
+                    <div class="score-value">{{ profile.reputation }}</div>
                 </div>
                 <div class="score-card blue-card">
-                    <div class="score-title">Items Sold</div>
-                    <div class="score-value">45</div>
+                    <div class="score-title">Auctions Created</div>
+                    <div class="score-value">{{ profile.auction_count }}</div>
                 </div>
                 <div class="score-card grey-card">
                     <div class="score-title">Auctions Won</div>
-                    <div class="score-value">102</div>
+                    <div class="score-value">{{ profile.win_count }}</div>
                 </div>
             </div>
         </div>
         <div class="profile-detail-section">
             <div class="profile-detail">
+                <div class="profile-detail-title">First Name</div>
+                <div class="profile-detail-value">{{ profile.first_name }}</div>
+            </div>
+            <div class="profile-detail">
+                <div class="profile-detail-title">Last Name</div>
+                <div class="profile-detail-value">{{ profile.last_name }}</div>
+            </div>
+            <div class="profile-detail">
                 <div class="profile-detail-title">Address</div>
-                <div class="profile-detail-value">B-57, Jamestown, ABS</div>
+                <div class="profile-detail-value">{{ profile.address }}</div>
             </div>
             <div class="profile-detail">
                 <div class="profile-detail-title">Phone Number</div>
-                <div class="profile-detail-value">+91 XXX22XXXX</div>
+                <div class="profile-detail-value">{{ profile.phone }}</div>
             </div>
             <div class="profile-detail">
                 <div class="profile-detail-title">City</div>
-                <div class="profile-detail-value">New Delhi</div>
+                <div class="profile-detail-value">{{ profile.city }}</div>
             </div>
             <div class="profile-detail">
                 <div class="profile-detail-title">State</div>
-                <div class="profile-detail-value">Delhi</div> 
+                <div class="profile-detail-value">{{ profile.state }}</div> 
             </div>
             <div class="profile-detail">
                 <div class="profile-detail-title">Country</div>
-                <div class="profile-detail-value">India</div>
+                <div class="profile-detail-value">{{ profile.country }}</div>
             </div>
             <div class="profile-detail">
                 <div class="profile-detail-title">User ID</div>
-                <div class="profile-detail-value">0112X</div>
+                <div class="profile-detail-value">{{ profile.user.id }}</div>
             </div>
         </div>
     </div>

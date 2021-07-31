@@ -22,7 +22,7 @@
                 <div class="param-title">Status</div>
                 <div class="param-value green">{{ auction.status }}</div>
             </div>
-            <a class="bid-history-btn" href="">
+            <a class="bid-history-btn" href="{% url 'bidhistory' auction.id %}">
                 View Bidding History
             </a>
         </div>
@@ -47,7 +47,7 @@
             <div class="product-details">
                 <div class="auction-title">{{ auction.title }}</div>
 
-                {% if auction.status != 'Ended' and auction.status != 'Sold' %}
+                {% if not auction.is_sold and auction.is_started %}
                 <div class="countdown-timer">
                     <div class="countdown-title">ENDS IN</div>
                     <div class="timer">
@@ -64,8 +64,6 @@
                         </div>
                     </div>
                 </div>
-                {% else %}
-                <p class="auction-status">{{ auction.status }}</p>
                 {% endif %}
                 <div class="auction-detail-box">
                     <div class="detail"><span class="detail-text">Number of Bids</span><span
@@ -74,7 +72,11 @@
                             {{ auction.opening_price }}</span></div>
                     <div class="detail"><span class="detail-text">Current Bid Price</span><span
                             class="detail-value dark bold">₹
-                            5200</span></div>
+                            {% if auction.current_bid_price %}
+                            {{ auction.current_bid_price }}
+                            {% else %}
+                            {{ auction.opening_price }}
+                            {% endif %}</span></div>
                 </div>
                 {% if messages %}
                 <div class="message">
@@ -83,7 +85,7 @@
                     {% endfor %}
                 </div>
                 {% endif %}
-                <form action="" class="bid-form" method='POST'>
+                <form action="" class="styled-form" method='POST'>
                     {% csrf_token %}
                 
                     {{ form }}
@@ -109,7 +111,7 @@
                 <div class="param-title">Status</div>
                 <div class="param-value green">{{ auction.status }}</div>
             </div>
-            <a class="bid-history-btn" href="">
+            <a class="bid-history-btn" href="{% url 'bidhistory' auction.id %}">
                 View Bidding History
             </a>
         </div>

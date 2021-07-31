@@ -38,7 +38,7 @@
         {% if user.is_authenticated %}
         <li class="dropdown">{{ request.user }}
             <ul class="nav-dropdown">
-                <li><a href="">Dashboard</a></li>
+                <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
                 <li><a href="{% url 'logout' %}">Logout</a></li>
             </ul>
             <i class="fas fa-chevron-down"></i>

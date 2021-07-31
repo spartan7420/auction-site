@@ -2,10 +2,11 @@
 {% load static %}
 {% block content %}
 <div class="wrapper-bid-table">
-
+        <a class="back-btn" href="{% url 'auctiondetail' auction.id %}">Back</a>
         <div class="parameters">
             <div class="parameter">
-                <div class="param-title">Product ID</div>
+                <div class="param-title">
+                    Product ID</div>
                 <div class="param-value">{{ auction.id }}</div>
             </div>
             <div class="parameter">
@@ -24,31 +25,28 @@
         <div class="auction-title">{{ auction.title }}</div>
         
         <table class="bid-history-table">
-            <tr>
-                <th>User ID</th>
-                <th>Bid Amount</th>
-                <th>Time</th>
-            </tr>
-            <tr>
-                <td>3423</td>
-                <td>₹ 5002</td>
-                <td>27th Aug 2021, 11:30 AM</td>
-            </tr>
-            <tr>
-                <td>3423</td>
-                <td>₹ 5002</td>
-                <td>27th Aug 2021, 11:30 AM</td>
-            </tr>
-            <tr>
-                <td>3423</td>
-                <td>₹ 5002</td>
-                <td>27th Aug 2021, 11:30 AM</td>
-            </tr>
-            <tr>
-                <td>3423</td>
-                <td>₹ 5002</td>
-                <td>27th Aug 2021, 11:30 AM</td>
-            </tr>
+            <caption>BIDDING HISTORY</caption>
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>Bid Amount</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bid in bids %}
+                <tr>
+                    <td>{% if bid.user.id %}
+                            {{ bid.user.id }}
+                        {% else %}
+                            Unavailable
+                        {% endif %}
+                    </td>
+                    <td>₹ {{ bid.amount }}</td>
+                    <td>{{ bid.created_at }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
         </table>
         <div class="parameters-small-screen">
             <div class="parameter">

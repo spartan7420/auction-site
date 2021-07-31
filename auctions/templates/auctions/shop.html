@@ -19,7 +19,7 @@
         </ul>
     </div>
     <div class="middle-section">
-        <div class="banner-title">All Active Auctions</div>
+        <div class="banner-title">All Auctions</div>
         <hr>
         <div class="middle-section-content">
             {% if auctions %}
@@ -30,11 +30,11 @@
                 </div>
                 <div class="auction-title">{{ auction.title|truncatechars:60 }}</div>
                 <div class="auction-detail-box">
-                    <div class="detail"><span class="detail-text">Number of Bids</span><span class="detail-value blue">22</span>
+                    <div class="detail"><span class="detail-text">Number of Bids</span><span class="detail-value blue">{{ auction.bid_set.count }}</span>
                     </div>
-                    <div class="detail"><span class="detail-text">Opening Price</span><span class="detail-value blue">₹ 400</span>
+                    <div class="detail"><span class="detail-text">Opening Price</span><span class="detail-value blue">₹ {{ auction.opening_price }}</span>
                     </div>
-                    <div class="detail"><span class="detail-text">Current Bid Price</span>
+                {% if auction.is_started %} <div class="detail"><span class="detail-text">Current Bid Price</span>
                         <span class="detail-value dark bold">
                             ₹ {% if auction.current_bid_price %}
                             {{ auction.current_bid_price }}
@@ -42,8 +42,9 @@
                             {{ auction.opening_price }}
                             {% endif %}
                         
-                        </span></div>
+                        </span></div>{% endif %}
                 </div>
+            
             {% if not auction.is_sold and auction.is_started %}
             <a href="{% url 'placebid' auction.id %}" class="primary-btn">Place Bid</a>
             {% endif %}
