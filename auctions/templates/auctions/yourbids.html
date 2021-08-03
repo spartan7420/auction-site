@@ -1,0 +1,154 @@
+{% extends 'auctions/main.html' %}
+{% load static %}
+{% block content %}
+<div class="wrapper">
+    <div class="title">
+        Your Bids ({{ user.userprofile.bid_count }})
+    </div>
+    <hr>
+    {% if bids %}
+    <div class="your-auctions-container">
+        {% if messages %}
+        <div class="message">
+            {% for message in messages %}
+            <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% for bid in bids %}
+        {% if bid.auction.is_started and not bid.auction.is_ended %}
+        <div class="your-auction">
+            <div class="action-container">
+            </div>
+            <div class="your-auction-card">
+                <div class="your-auction-img">
+                    <img src="{{ bid.auction.auctionimage_set.all.first.image.url }}" alt="">
+                </div>
+                <div class="your-auction-details">
+                    <div class="auction-title"><a href="{% url 'auctiondetail' bid.auction.id %}">{{ bid.auction.title }}</a>
+                    </div>
+                    <div class="your-auction-detail-box">
+                        <div class="detail"><span class="detail-text">Number of Bids</span><span
+                                class="detail-value blue">
+                                {{ bid.auction.bid_set.count }}</span></div>
+                        <div class="detail"><span class="detail-text">Opening Price</span><span
+                                class="detail-value blue">₹
+                                {{ bid.auction.opening_price }}</span></div>
+                        {% if bid.auction.is_started and not bid.auction.is_sold %}
+                        <div class="detail"><span class="detail-text">Current Bid Price</span>
+                            <span class="detail-value dark bold">
+                                ₹ {% if bid.auction.current_bid_price %}
+                                {{ bid.auction.current_bid_price }}
+                                {% else %}
+                                {{ bid.auction.opening_price }}
+                                {% endif %}
+
+                            </span>
+                        </div>
+                        <div class="detail">
+                            <span class="detail-text">Status</span><span class="detail-value green">
+                                {{ bid.auction.status }}</span>
+                        </div>
+
+                        {% elif bid.auction.is_started and bid.auction.is_sold %}
+                        <div class="detail"><span class="detail-text">Final Price</span>
+                            <span class="detail-value dark bold">
+                                ₹ {% if bid.auction.current_bid_price %}
+                                {{ bid.auction.current_bid_price }}
+                                {% else %}
+                                {{ bid.auction.opening_price }}
+                                {% endif %}
+                            </span>
+                        </div>
+                        {% elif bid.auction.is_scheduled %}
+                        {% elif bid.auction.is_ended %}
+                        <div class="detail"><span class="detail-text">Final Price</span>
+                            <span class="detail-value dark bold">
+                                ₹ {% if bid.auction.current_bid_price %}
+                                {{ bid.auction.current_bid_price }}
+                                {% else %}
+                                {{ bid.auction.opening_price }}
+                                {% endif %}
+                            </span>
+                        </div>
+                        <div class="detail">
+                            <span class="detail-text">Status</span><span class="detail-value green">
+                                {{ bid.auction.status }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="your-auction-status">
+                    {% if bid.auction.is_started and not bid.auction.is_sold %}
+                    <div style="color: var(--red);">LIVE</div>
+                    {% elif bid.auction.is_scheduled %}
+                    <div style="color: var(--dark-400);">SCHEDULED</div>
+                    {% elif bid.auction.is_sold or bid.auction.is_ended %}
+                    <div style="color: var(--dark-400);">ENDED</div>
+                    {% elif bid.auction.is_sold or bid.auction.is_started %}
+                    <div style="color: var(--dark-400);">ENDED</div>
+                    {% endif %}
+
+                    {% if not bid.auction.is_sold and bid.auction.is_started %}
+                    <div class="countdown-timer">
+                        <div class="countdown-title">ENDS IN</div>
+                        <div class="timer">
+                            <div class="timer-values">
+                                <span class="day-value">{{ bid.auction.time_left.day }}</span> :
+                                <span class="hr-value">{{ bid.auction.time_left.hour }}</span> :
+                                <span class="min-value">{{ bid.auction.time_left.min }}</span>
+                                <span class="sec-value sec">{{ bid.auction.time_left.sec }}</span>
+                            </div>
+                            <div class="timer-names">
+                                <span class="time-title">DAY</span>
+                                <span class="time-title">HOUR</span>
+                                <span class="time-title">MIN</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% elif bid.auction.is_scheduled %}
+                    <div class="countdown-timer">
+                        <div class="countdown-title">STARTS IN</div>
+                        <div class="timer">
+                            <div class="timer-values">
+                                <span class="day-value">{{ bid.auction.time_until_start.day }}</span> :
+                                <span class="hr-value">{{ bid.auction.time_until_start.hour }}</span> :
+                                <span class="min-value">{{ bid.auction.time_until_start.min }}</span>
+                                <span class="sec-value sec">{{ bid.auction.time_until_start.sec }}</span>
+                            </div>
+                            <div class="timer-names">
+                                <span class="time-title">DAY</span>
+                                <span class="time-title">HOUR</span>
+                                <span class="time-title">MIN</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                <div class="your-auction-actions">
+                    <div class="your-bid"><span class="detail-text">Your Bid</span>
+                        <span class="detail-value">
+                            ₹ {{ bid.amount }}
+                        </span>
+                    </div>
+                    {% if bid.auction.is_started and not bid.auction.is_sold %}
+                    <a href="{% url 'placebid' bid.auction.id %}" class="manage-btn blue-light-btn">Place Bid</a>
+                    <a href="" class="manage-btn green-btn">Buy</a>
+                    {% elif auction.is_ended and auction.is_sold %} 
+                    <!-- If not winner -->
+                    {% elif auction.is_started and auction.is_sold %}
+                    <a href="" class="manage-btn red-btn">Checkout</a>
+                    <p>Congratulations! You’ve won the Auction. Please proceed to the checkout page and make the payment.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% else %}
+    No Auctions Found
+    {% endif %}
+</div>
+
+{% endblock %}

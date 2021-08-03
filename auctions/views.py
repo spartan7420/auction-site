@@ -176,6 +176,20 @@ def yourauctions(request):
     }
     return render(request, 'auctions/yourauctions.html', context)
 
+@login_required(login_url='login')
+def yourbids(request):
+    user = request.user
+    auctions = user.bid_set.all().distinct('auction')
+    bids = []
+    for entry in auctions:
+        b = user.bid_set.filter(auction=entry.auction).latest('created_at')
+        bids.append(b)
+
+    context = {
+        'bids': bids,
+    }
+    return render(request, 'auctions/yourbids.html', context)
+
 
 @login_required(login_url='login')
 def editauction(request, auction_id):

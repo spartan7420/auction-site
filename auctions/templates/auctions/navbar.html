@@ -32,9 +32,11 @@
                 <li>YEN</li>
             </ul>
         </li>
+        {% if user.is_authenticated %}
         <li class="your-bids">
-            <a href="">Your Bids</a>
-            <span class="bid-count">5</span></li>
+            <a href="{% url 'yourbids' %}">Your Bids</a>
+            <span class="bid-count">{{ user.userprofile.bid_count }}</span></li>
+        {% endif %}
         {% if user.is_authenticated %}
         <li class="dropdown">{{ request.user }}
             <ul class="nav-dropdown">

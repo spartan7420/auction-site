@@ -21,6 +21,15 @@ class UserProfile(models.Model):
     date_of_birth = models.DateField(null=True)
     reputation = models.IntegerField(default=0)
 
+    def bid_count(self):
+        auctions = self.user.bid_set.all().distinct('auction')
+        bids = []
+        for entry in auctions:
+            b = self.user.bid_set.filter(auction=entry.auction).latest('created_at')
+            bids.append(b)
+        
+        return len(bids)
+
     def auction_count(self):
         return Auction.objects.filter(user=self.user).count()
     
