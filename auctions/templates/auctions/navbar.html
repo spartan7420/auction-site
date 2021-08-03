@@ -1,4 +1,5 @@
-{% load static%}
+{% load static %}
+{% load currency%}
 <nav>
     <div class="site-logo">
         <img src="" alt="">
@@ -22,15 +23,20 @@
             </ul>
             <i class="fas fa-chevron-down"></i>
         </li>
-        <li class="dropdown currency">Currency
-            <span class="currency-value">INR 
-                <i class="fas fa-chevron-down"></i>
-            </span>
-            <ul class="nav-dropdown drop-small">
-                <li>INR</li>
-                <li>USD</li>
-                <li>YEN</li>
-            </ul>
+        <li class="currency">Currency
+            <form id="currency_switcher" method="POST" action="{% url 'selectcurrency' %}">
+                {% csrf_token %}
+                <select name="currency" onchange="$('#currency_switcher').submit()">
+                    {% for curr in CURRENCIES %}
+                    <option value="{{ curr.code }}" {% if curr.code == request.session.currency %}selected{% endif%}>
+                        {{ curr.symbol }} {{ curr.code }}
+                    </option>
+                    {% endfor %}
+                </select>
+                <noscript>
+                    <input type="submit" value="Set" />
+                </noscript>
+            </form>
         </li>
         {% if user.is_authenticated %}
         <li class="your-bids">
@@ -62,3 +68,4 @@
         <div class="line"></div>
     </div>
 </nav>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

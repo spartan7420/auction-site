@@ -124,6 +124,12 @@ nav li {
           align-items: center;
 }
 
+.currency select, .your-bids select {
+  display: block;
+  width: 70px;
+  margin-left: 5px;
+}
+
 .currency-value {
   color: var(--secondary);
 }

@@ -8,7 +8,7 @@ class AuctionImageInline(admin.StackedInline):
     extra = 3
 
 class AuctionAdmin(admin.ModelAdmin):
-    list_display = ('title', 'start_date', 'end_date', 'status', 'opening_price', 'final_price')
+    list_display = ('title', 'start_date', 'end_date', 'status', 'opening_price', 'buy_price')
     inlines = [AuctionImageInline]
 
 admin.site.register([UserProfile, Bid, Order, Winner])

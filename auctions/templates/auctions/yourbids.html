@@ -1,5 +1,6 @@
 {% extends 'auctions/main.html' %}
-{% load static %}
+{% load static %}\
+{% load currency %}
 {% block content %}
 <div class="wrapper">
     <div class="title">
@@ -31,18 +32,29 @@
                         <div class="detail"><span class="detail-text">Number of Bids</span><span
                                 class="detail-value blue">
                                 {{ bid.auction.bid_set.count }}</span></div>
-                        <div class="detail"><span class="detail-text">Opening Price</span><span
-                                class="detail-value blue">₹
-                                {{ bid.auction.opening_price }}</span></div>
+                        <div class="detail"><span class="detail-text">Opening Price</span>
+                            <span class="detail-value blue">
+                            {% for curr in CURRENCIES %}
+                                {% if curr.code == request.session.currency %}
+                                    {{ curr.symbol }}
+                                {% endif %}
+                            {% endfor %}
+                            {{ bid.auction.opening_price|currency:request.session.currency }}
+                            </span>
+                        </div>
                         {% if bid.auction.is_started and not bid.auction.is_sold %}
                         <div class="detail"><span class="detail-text">Current Bid Price</span>
                             <span class="detail-value dark bold">
-                                ₹ {% if bid.auction.current_bid_price %}
-                                {{ bid.auction.current_bid_price }}
+                                {% for curr in CURRENCIES %}
+                                    {% if curr.code == request.session.currency %}
+                                        {{ curr.symbol }}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if bid.auction.current_bid_price %}
+                                    {{ bid.auction.current_bid_price|currency:request.session.currency }}
                                 {% else %}
-                                {{ bid.auction.opening_price }}
+                                    {{ bid.auction.opening_price|currency:request.session.currency }}
                                 {% endif %}
-
                             </span>
                         </div>
                         <div class="detail">
@@ -53,10 +65,15 @@
                         {% elif bid.auction.is_started and bid.auction.is_sold %}
                         <div class="detail"><span class="detail-text">Final Price</span>
                             <span class="detail-value dark bold">
-                                ₹ {% if bid.auction.current_bid_price %}
-                                {{ bid.auction.current_bid_price }}
+                                {% for curr in CURRENCIES %}
+                                    {% if curr.code == request.session.currency %}
+                                        {{ curr.symbol }}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if bid.auction.current_bid_price %}
+                                    {{ bid.auction.current_bid_price|currency:request.session.currency }}
                                 {% else %}
-                                {{ bid.auction.opening_price }}
+                                    {{ bid.auction.opening_price|currency:request.session.currency }}
                                 {% endif %}
                             </span>
                         </div>
@@ -64,10 +81,15 @@
                         {% elif bid.auction.is_ended %}
                         <div class="detail"><span class="detail-text">Final Price</span>
                             <span class="detail-value dark bold">
-                                ₹ {% if bid.auction.current_bid_price %}
-                                {{ bid.auction.current_bid_price }}
+                                {% for curr in CURRENCIES %}
+                                    {% if curr.code == request.session.currency %}
+                                        {{ curr.symbol }}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if bid.auction.current_bid_price %}
+                                    {{ bid.auction.current_bid_price|currency:request.session.currency }}
                                 {% else %}
-                                {{ bid.auction.opening_price }}
+                                    {{ bid.auction.opening_price|currency:request.session.currency }}
                                 {% endif %}
                             </span>
                         </div>
@@ -128,7 +150,12 @@
                 <div class="your-auction-actions">
                     <div class="your-bid"><span class="detail-text">Your Bid</span>
                         <span class="detail-value">
-                            ₹ {{ bid.amount }}
+                            {% for curr in CURRENCIES %}
+                                {% if curr.code == request.session.currency %}
+                                    {{ curr.symbol }}
+                                {% endif %}
+                            {% endfor %}
+                            {{ bid.amount|currency:request.session.currency }}
                         </span>
                     </div>
                     {% if bid.auction.is_started and not bid.auction.is_sold %}

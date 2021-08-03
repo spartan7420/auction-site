@@ -1,10 +1,13 @@
 from datetime import datetime
 from django.db import models
 from django.db.models import CheckConstraint, Q, F
+from currencies.models import Currency
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
+from django.core.validators import MinValueValidator
 from django.utils import timezone
 from django.db.models import Max
+from decimal import Decimal
 import pytz
 
 # Create your models here.
@@ -20,6 +23,7 @@ class UserProfile(models.Model):
     country = models.CharField(max_length=2, choices=pytz.country_names.items(), null=True)
     date_of_birth = models.DateField(null=True)
     reputation = models.IntegerField(default=0)
+    currency = models.ForeignKey(Currency, on_delete=models.CASCADE, null=True, blank=True)
 
     def bid_count(self):
         auctions = self.user.bid_set.all().distinct('auction')
@@ -74,8 +78,14 @@ class Auction(models.Model):
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     status = models.CharField(max_length=200, choices=STATUS, default='Unsold')
-    opening_price = models.PositiveIntegerField(null=True)
-    final_price = models.PositiveIntegerField(blank=True, null=True) 
+    opening_price = models.DecimalField(        
+        max_digits=15,
+        decimal_places=2,
+        validators=[MinValueValidator(Decimal('0.01'))], null=True, blank=True)
+    buy_price = models.DecimalField(        
+        max_digits=15,
+        decimal_places=2,
+        validators=[MinValueValidator(Decimal('0.01'))], null=True, blank=True)
 
     def time_left(self):
         now = timezone.now()
@@ -92,8 +102,6 @@ class Auction(models.Model):
                 
                 if int(day) < 10 and int(day) >= 0:
                     day = '0' + day 
-                else:
-                    day = '00'
                 if int(hour) < 10:
                     hour = '0' + hour 
 
@@ -191,6 +199,12 @@ class Auction(models.Model):
         """
         return timezone.now() < self.start_date
         
+    def has_bids(self):
+        """
+        Returns true if an auction has atleast 1 bid
+        """
+        return self.bid_set.all().count() > 0
+
     def is_started(self):
         """
         Returns True if the auction is live
@@ -243,7 +257,10 @@ class Winner(models.Model):
 class Bid(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     auction = models.ForeignKey(Auction, null=True, on_delete=models.SET_NULL)
-    amount = models.PositiveIntegerField()
+    amount = models.DecimalField(        
+        max_digits=15,
+        decimal_places=2,
+        validators=[MinValueValidator(Decimal('0.01'))], null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
  
 class Order(models.Model):
@@ -264,7 +281,10 @@ class Order(models.Model):
         ('Shipped', 'Shipped'),
         ('Delivered', 'Delivered')
     )
-    payment_amount = models.PositiveIntegerField()
+    payment_amount = models.DecimalField(        
+        max_digits=15,
+        decimal_places=2,
+        validators=[MinValueValidator(Decimal('0.01'))], null=True, blank=True)
     payment_method= models.CharField(max_length=200, null=True, choices=PAYMENT_METHOD)
     payment_status= models.CharField(max_length=200, null=True, choices=PAYMENT_STATUS, default='Pending')
     order_status= models.CharField(max_length=200, null=True, choices=ORDER_STATUS, default='Processing')

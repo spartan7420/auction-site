@@ -1,5 +1,6 @@
 {% extends 'auctions/main.html' %}
 {% load static %}
+{% load currency %}
 {% block content %}
 <div class="wrapper-bid-table">
         <a class="back-btn" href="{% url 'auctiondetail' auction.id %}">Back</a>
@@ -42,7 +43,14 @@
                             Unavailable
                         {% endif %}
                     </td>
-                    <td>₹ {{ bid.amount }}</td>
+                    <td>
+                        {% for curr in CURRENCIES %}
+                            {% if curr.code == request.session.currency %}
+                                {{ curr.symbol }}
+                            {% endif %}
+                        {% endfor %}
+                        {{ bid.amount|currency:request.session.currency }}
+                    </td>
                     <td>{{ bid.created_at }}</td>
                 </tr>
                 {% endfor %}

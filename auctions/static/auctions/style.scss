@@ -94,6 +94,11 @@ nav {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    select {
+        display: block;
+        width: 70px;
+        margin-left: 5px;
+    }
 }
 .currency-value {
     color: var(--secondary);

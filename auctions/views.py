@@ -7,15 +7,35 @@ from .forms import *
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .decorators import unauthenticated_user
+from auctionsite import settings
 from django.contrib.auth.decorators import login_required
 
 # Create your views here.
+def set_currency(request):
+    if not request.session.has_key('currency'):
+        if request.user.is_authenticated:
+            request.session['currency'] = request.user.userprofile.currency.code
+        else:
+            request.session['currency'] = settings.DEFAULT_CURRENCY
+    return request
+
 def home(request):
+    request = set_currency(request)
     auctions = Auction.objects.all()[:6]
     context = {
         'auctions': auctions
     }
     return render(request, 'auctions/home.html', context)
+
+def selectcurrency(request):
+    if request.method == 'POST':
+        lasturl = request.META.get('HTTP_REFERER')
+        request.session['currency'] = request.POST['currency']
+        if lasturl:
+            return HttpResponseRedirect(lasturl)
+        else:
+            return redirect('home')
+
 
 @unauthenticated_user
 def loginPage(request):
@@ -119,9 +139,17 @@ def placebid(request, auction_id):
     if request.method == 'POST':
         form = CreateBidForm(request.POST)
         if form.is_valid():
-            if form.cleaned_data.get('amount') > auction.current_bid_price():
+            current_currency = Currency.objects.get(code=request.session['currency']).factor
+            amount_default_curr = Decimal(form.cleaned_data.get('amount')) / current_currency
+            if auction.has_bids():
+                current_bid =auction.current_bid_price()
+            else:
+                current_bid = auction.opening_price
+
+            if amount_default_curr > current_bid:
                 bid = form.save(commit=False)
                 bid.user = request.user
+                bid.amount = amount_default_curr
                 bid.auction = Auction.objects.get(pk=auction_id)
                 bid.save()
                 messages.success(request, 'Bid was placed successfully!')
@@ -150,10 +178,14 @@ def createnewauction(request):
 
     if request.method == 'POST':
         form = CreateAuctionForm(request.POST)
-
+        current_currency = Currency.objects.get(code=request.session['currency']).factor
+        opening_default_curr = Decimal(form.cleaned_data.get('amount')) / current_currency
+        buy_default_curr = Decimal(form.cleaned_data.get('amount')) / current_currency
         if form.is_valid():
             auction = form.save(commit=False)
             auction.user = request.user
+            auction.opening_price = opening_default_curr
+            auction.buy_price = buy_default_curr
             auction.save()
             images = request.FILES.getlist('image')
             print(images)

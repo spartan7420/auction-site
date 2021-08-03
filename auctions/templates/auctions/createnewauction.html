@@ -18,7 +18,25 @@
 
         <label for="id_end_date">End Date</label>
         <input type="text" name="end_date" id="id_end_date"> -->
+        <label for="id_opening_price">Opening price (
+                                {% for curr in CURRENCIES %}
+                                {% if curr.code == request.session.currency %}
+                                {{ curr.symbol }}
+                                {% endif %}
+                                {% endfor %})</label>
+        <input type="number" name="opening_price" min="0" required id="id_opening_price">
+        <label for="id_buy_price">Buy price 
+            (
+            {% for curr in CURRENCIES %}
+            {% if curr.code == request.session.currency %}
+            {{ curr.symbol }}
+            {% endif %}
+            {% endfor %}
+            )
 
+        </label>
+        <input type="number" name="buy_price" min="0" required id="id_buy_price">
+        
         <label for="image">Upload Product Images</label>
         <input type="file" multiple id="image" name="image">
         <input type="submit" value="Create">

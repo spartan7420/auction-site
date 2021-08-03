@@ -1,10 +1,12 @@
 {% extends 'auctions/main.html' %}
 {% load static %}
+{% load currency %}
 {% block title %}Place a Bid{% endblock %}
 
 {% block content %}
 <div class="wrapper-detail">
     <div class="detail-container">
+        <a class="back-btn" href="{% url 'auctiondetail' auction.id %}">Back</a>
         <div class="parameters">
             <div class="parameter">
                 <div class="param-title">Product ID</div>
@@ -68,15 +70,30 @@
                 <div class="auction-detail-box">
                     <div class="detail"><span class="detail-text">Number of Bids</span><span
                             class="detail-value blue">{{ auction.bid_set.count }}</span></div>
-                    <div class="detail"><span class="detail-text">Opening Price</span><span class="detail-value blue">₹
-                            {{ auction.opening_price }}</span></div>
-                    <div class="detail"><span class="detail-text">Current Bid Price</span><span
-                            class="detail-value dark bold">₹
-                            {% if auction.current_bid_price %}
-                            {{ auction.current_bid_price }}
-                            {% else %}
-                            {{ auction.opening_price }}
-                            {% endif %}</span></div>
+                    <div class="detail"><span class="detail-text">Opening Price</span>
+                        <span class="detail-value blue">
+                        {% for curr in CURRENCIES %}
+                            {% if curr.code == request.session.currency %}
+                                {{ curr.symbol }}
+                            {% endif %}
+                        {% endfor %}
+                        {{ auction.opening_price|currency:request.session.currency }}
+                        </span>
+                    </div>
+                    <div class="detail"><span class="detail-text">Current Bid Price</span>
+                        <span class="detail-value dark bold">
+                                {% for curr in CURRENCIES %}
+                                    {% if curr.code == request.session.currency %}
+                                        {{ curr.symbol }}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if auction.current_bid_price %}
+                                    {{ auction.current_bid_price|currency:request.session.currency }}
+                                {% else %}
+                                    {{ auction.opening_price|currency:request.session.currency }}
+                                {% endif %}
+                        </span>
+                    </div>
                 </div>
                 {% if messages %}
                 <div class="message">
@@ -88,7 +105,13 @@
                 <form action="" class="styled-form" method='POST'>
                     {% csrf_token %}
                 
-                    {{ form }}
+                    {{ form.amount.label }} ( 
+                    {% for curr in CURRENCIES %}
+                        {% if curr.code == request.session.currency %}
+                            {{ curr.symbol }}
+                        {% endif %}
+                    {% endfor %})
+                    {{ form.amount }}
                     <input type="submit" value="PLACE BID">
                 </form>
             </div>

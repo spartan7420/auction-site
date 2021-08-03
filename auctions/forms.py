@@ -19,7 +19,7 @@ class CreateAuctionForm(ModelForm):
     class Meta:
         model = Auction
         fields = ['category', 'title', 'description', 'details'
-                  ,'start_date', 'end_date', 'status', 'opening_price']
+                  ,'start_date', 'end_date', 'status']
 
 class EditProfile(ModelForm):
     
