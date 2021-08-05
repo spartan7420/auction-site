@@ -262,7 +262,18 @@ class Bid(models.Model):
         decimal_places=2,
         validators=[MinValueValidator(Decimal('0.01'))], null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
- 
+
+class BuyRequest(models.Model):
+    STATUS = (
+        ('Waiting', 'Waiting'),
+        ('Accepted', 'Accepted'),
+        ('Rejected', 'Rejected'),
+    )
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    auction = models.ForeignKey(Auction, null=True, on_delete=models.SET_NULL)
+    status = models.CharField(max_length=200, choices=STATUS, default='Waiting')
+    created_at = models.DateTimeField(auto_now_add=True)
+
 class Order(models.Model):
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     auction = models.OneToOneField(Auction, null=True, on_delete=models.SET_NULL)

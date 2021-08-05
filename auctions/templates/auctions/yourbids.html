@@ -1,5 +1,5 @@
 {% extends 'auctions/main.html' %}
-{% load static %}\
+{% load static %}
 {% load currency %}
 {% block content %}
 <div class="wrapper">
@@ -159,8 +159,15 @@
                         </span>
                     </div>
                     {% if bid.auction.is_started and not bid.auction.is_sold %}
-                    <a href="{% url 'placebid' bid.auction.id %}" class="manage-btn blue-light-btn">Place Bid</a>
-                    <a href="" class="manage-btn green-btn">Buy</a>
+                        <a href="{% url 'placebid' bid.auction.id %}" class="manage-btn blue-light-btn">Place Bid</a>
+                        {% if not bid.buy_req %}
+                            <a href="" class="manage-btn green-btn">Buy</a>
+                        {% else %}
+                            <div class="buy-status">
+                                <div>Buy Request</div>
+                                <div>{{ bid.buy_req.status }}</div>
+                            </div>
+                        {% endif %}
                     {% elif auction.is_ended and auction.is_sold %} 
                     <!-- If not winner -->
                     {% elif auction.is_started and auction.is_sold %}

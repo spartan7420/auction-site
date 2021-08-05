@@ -60,7 +60,7 @@
 
                     </span></div>
                 </div>
-                {% if not auction.is_sold and auction.is_started %}
+                {% if not auction.is_sold and auction.is_started and not auction.user == user %}
                     <a href="{% url 'placebid' auction.id %}" class="primary-btn">Place Bid</a>
                 {% endif %}
                 <a href="{% url 'auctiondetail' auction.id %}" class="secondary-btn">View</a>

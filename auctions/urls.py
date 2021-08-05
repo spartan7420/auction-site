@@ -19,5 +19,9 @@ urlpatterns = [
     path('yourbids/', views.yourbids, name='yourbids'),
     path('<int:auction_id>/editauction/', views.editauction, name='editauction'),
     path('<int:auction_id>/deleteauction/', views.deleteauction, name='deleteauction'),
+    path('<int:bid_id>/deletebid/', views.deletebid, name='deletebid'),
+    path('<int:buy_request_id>/rejectbuyrequest/', views.rejectbuyrequest, name='rejectbuyrequest'),
+    path('<int:auction_id>/createbuyrequest/', views.createbuyrequest, name='createbuyrequest'),
+    path('<int:auction_id>/manageauction/', views.manageauction, name='manageauction'),
 ]
 

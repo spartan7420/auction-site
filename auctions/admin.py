@@ -11,5 +11,5 @@ class AuctionAdmin(admin.ModelAdmin):
     list_display = ('title', 'start_date', 'end_date', 'status', 'opening_price', 'buy_price')
     inlines = [AuctionImageInline]
 
-admin.site.register([UserProfile, Bid, Order, Winner])
+admin.site.register([UserProfile, Bid, Order, Winner, BuyRequest])
 admin.site.register(Auction, AuctionAdmin)

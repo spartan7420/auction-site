@@ -778,6 +778,9 @@ hr {
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 10px;
+        .manage-btn {
+            grid-column: span 2;
+        }
     }
     .countdown-timer {
         line-height: 2.5em;
@@ -1343,5 +1346,106 @@ hr {
     }
     .detail-value {
         font-weight: 300;
+    }
+}
+
+.buy-form {
+    box-shadow: 0 0 10px var(--card-shadow);
+    border-radius: 20px;
+    padding: 10px;
+    .detail {
+        margin: 20px 0;
+    }
+    .buy-title {
+        font-weight: 500;
+        text-align: center;
+        margin: 10px 0;
+    }
+    .buy-text {
+        font-weight: 300;
+    }
+}
+.buy-status {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 0;
+    background-color: var(--light-border);
+    font-size: 0.8rem !important;
+    :nth-child(1) {
+        font-weight: 500;
+    }
+    :nth-child(2) {
+        text-transform: uppercase;
+    }
+}
+.more-info-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 10px;
+    margin-top: 30px;
+    .bid-history-table {
+        margin: 0;
+    }
+    .red {
+        background-color: var(--red);
+        color: var(--light);
+        opacity: 0.8;
+    }
+    .blue {
+        background-color: var(--secondary);
+        color: var(--light) !important;  
+    }
+    .margin-rt-5 {
+        margin-right: 5px;
+    }
+}
+.bid-list {
+    border: 1px solid var(--light-border);
+}
+.buy-request-list {
+    padding: 10px;
+    border: 1px solid var(--light-border);
+}
+.buy-request-title {
+    color: var(--dark-400);
+    text-transform: uppercase;
+    margin-bottom: 15px;
+}
+.date-time {
+    font-size: 0.7rem;
+    color: grey;
+}
+.buy-request {
+    border: 1px solid var(--light-border);
+    padding: 5px 10px;
+    border-radius: 10px;
+}
+.buy-request-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr 1fr;
+    align-items: center;
+}
+.btn {
+    padding: 10px 5px;
+    text-decoration: none;
+    font-size: 0.8rem;
+    border-radius: 10px;
+    text-align: center;
+    letter-spacing: 1px;
+}
+.delete {
+    color: var(--red);
+}
+.buy-req-status {
+    grid-column: span 2;
+    background-color: var(--dark-600);
+    text-align: center;
+    padding: 5px 0;
+}
+@media screen and (max-width: 914px) {
+    .more-info-container {
+        grid-template-columns: 1fr;
     }
 }

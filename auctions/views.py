@@ -85,11 +85,18 @@ def shop(request):
 
 def auctiondetail(request, auction_id):
     auction = Auction.objects.get(pk=auction_id)
+    if request.user.is_authenticated:
+        if auction.buyrequest_set.filter(user=request.user).exists():
+            buy_req = auction.buyrequest_set.get(user=request.user)
+            context = {
+                'auction': auction,
+                'buy_req': buy_req
+            }
+            return render(request, 'auctions/auctiondetail.html', context)
 
     context = {
         'auction': auction,
     }
-
     return render(request, 'auctions/auctiondetail.html', context)
 
 @login_required(login_url='login')
@@ -142,7 +149,7 @@ def placebid(request, auction_id):
             current_currency = Currency.objects.get(code=request.session['currency']).factor
             amount_default_curr = Decimal(form.cleaned_data.get('amount')) / current_currency
             if auction.has_bids():
-                current_bid =auction.current_bid_price()
+                current_bid = auction.current_bid_price()
             else:
                 current_bid = auction.opening_price
 
@@ -171,6 +178,22 @@ def bidhistory(request, auction_id):
         'bids': bids
     }
     return render(request, 'auctions/viewbidhistory.html', context)
+
+@login_required(login_url='login')
+def createbuyrequest(request, auction_id):
+    auction = Auction.objects.get(pk=auction_id)
+    if request.method == 'POST' and request.POST['buy']:
+        buy_request= BuyRequest()
+        buy_request.user = request.user
+        buy_request.auction = auction
+        buy_request.save()
+        messages.success(request, 'Buy request was placed successfully!')
+        return redirect('/' + str(auction_id) + '/auctiondetail')
+
+    context = {
+        'auction': auction
+    }
+    return render(request, 'auctions/createbuyrequest.html', context)
 
 @login_required(login_url='login')
 def createnewauction(request):
@@ -215,6 +238,9 @@ def yourbids(request):
     bids = []
     for entry in auctions:
         b = user.bid_set.filter(auction=entry.auction).latest('created_at')
+        if entry.auction.buyrequest_set.filter(user=user).exists():
+            buy_req = entry.auction.buyrequest_set.get(user=request.user)
+            b.buy_req = buy_req
         bids.append(b)
 
     context = {
@@ -249,3 +275,29 @@ def deleteauction(request, auction_id):
     messages.success(request, 'Auction was deleted successfully')
     return redirect('yourauctions')
 
+@login_required(login_url='login')
+def manageauction(request, auction_id):
+    auction = Auction.objects.get(pk=auction_id)
+    bids = auction.bid_set.all().order_by('-created_at')
+
+    context = {
+        'auction': auction,
+        'bids': bids
+    }
+    return render(request, 'auctions/manageauction.html', context)
+
+
+@login_required(login_url='login')
+def deletebid(request, bid_id):
+    bid = Bid.objects.get(pk=bid_id)
+    bid.delete()
+    messages.success(request, 'Bid was deleted successfully')
+    return redirect('manageauction')
+
+@login_required(login_url='login')
+def rejectbuyrequest(request, buy_request_id):
+    buy_req = BuyRequest.objects.get(pk=buy_request_id)
+    buy_req.status = 'Rejected'
+    buy_req.save()
+    messages.success(request, 'Buy request was rejected successfully')
+    return redirect('manageauction')
