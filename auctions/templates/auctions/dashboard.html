@@ -58,6 +58,14 @@
                 </a>
             </div>
         </div>
+        <div class="dashboard-title">Payment Set Up</div>
+        <hr>
+        {% if not stripe_account_link %}
+            <a href="{% url 'create-stripe-account' %}" class="stripe-connect"><span>Connect with</span></a>
+            <br />
+        {% else %}
+            <a href="{{ stripe_account_link.url }}">Complete your Stripe Account Setup to Create Auctions</a>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

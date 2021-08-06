@@ -24,6 +24,7 @@ class UserProfile(models.Model):
     date_of_birth = models.DateField(null=True)
     reputation = models.IntegerField(default=0)
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE, null=True, blank=True)
+    stripe_account_id = models.CharField(max_length=400, blank=True, null=True)
 
     def bid_count(self):
         auctions = self.user.bid_set.all().distinct('auction')

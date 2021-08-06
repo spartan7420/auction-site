@@ -1,0 +1,14 @@
+{% extends 'auctions/main.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% load static %}
+{% block content %}
+<div class="wrapper">
+    <form action="{% url 'create-checkout-session' auction.id %}" method="POST">
+        {% csrf_token %}
+        <button type="submit">Checkout</button>
+    </form>
+</div>
+
+{% endblock %}

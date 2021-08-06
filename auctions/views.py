@@ -1,14 +1,17 @@
-from django.db import reset_queries
+from decimal import Context
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect, request
+from django.http import HttpResponseRedirect, JsonResponse
 from .models import *
 from django.contrib.auth.forms import *
 from .forms import *
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .decorators import unauthenticated_user
-from auctionsite import settings
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
+import stripe
+
+stripe.api_key = settings.STRIPE_SECRET_KEY
 
 # Create your views here.
 def set_currency(request):
@@ -18,6 +21,7 @@ def set_currency(request):
         else:
             request.session['currency'] = settings.DEFAULT_CURRENCY
     return request
+
 
 def home(request):
     request = set_currency(request)
@@ -101,7 +105,22 @@ def auctiondetail(request, auction_id):
 
 @login_required(login_url='login')
 def dashboard(request):
-    context = {}
+    user = request.user
+    if user.userprofile.stripe_account_id != None:
+        stripe_account_link = stripe.AccountLink.create(
+                    account=user.userprofile.stripe_account_id,
+                    refresh_url='http://127.0.0.1:8000/dashboard',
+                    return_url='http://127.0.0.1:8000/dashboard',
+                    type='account_onboarding',
+                )
+        context = {
+            'stripe_account_link': stripe_account_link
+        }
+        return render(request, 'auctions/dashboard.html', context)
+
+    context = {
+
+    }
     return render(request, 'auctions/dashboard.html', context)
 
 @login_required(login_url='login')
@@ -121,7 +140,6 @@ def editprofile(request):
         form = EditProfile(request.POST, instance=profile)
         if form.is_valid():
             profile = form.save()
-            print(profile)
             messages.success(request, 'Your profile has been updated')
             return redirect('dashboard')
     context = {
@@ -290,9 +308,10 @@ def manageauction(request, auction_id):
 @login_required(login_url='login')
 def deletebid(request, bid_id):
     bid = Bid.objects.get(pk=bid_id)
+    auction = bid.auction
     bid.delete()
     messages.success(request, 'Bid was deleted successfully')
-    return redirect('manageauction')
+    return redirect('/' + str(auction.id) + '/manageauction')
 
 @login_required(login_url='login')
 def rejectbuyrequest(request, buy_request_id):
@@ -301,3 +320,63 @@ def rejectbuyrequest(request, buy_request_id):
     buy_req.save()
     messages.success(request, 'Buy request was rejected successfully')
     return redirect('manageauction')
+
+@login_required(login_url='login')
+def createstripeaccount(request):
+    user = request.user
+    if not user.userprofile.stripe_account_id:
+        account = stripe.Account.create(
+                    type='standard',
+                )
+        print(account)
+        user.userprofile.stripe_account_id = account.id
+        user.userprofile.save()
+
+    return redirect('dashboard')
+
+@login_required(login_url='login')
+def checkout(request, auction_id):
+    auction = Auction.objects.get(pk=auction_id)
+    context = {
+        'auction': auction
+    }
+    return render(request, 'auctions/checkout.html', context)
+
+@login_required(login_url='login')
+def createcheckoutsession(request, auction_id):
+    if request.method == 'POST':
+        auction = Auction.objects.get(pk=auction_id)
+        checkout_session = stripe.checkout.Session.create(
+        payment_method_types=['card'],
+        line_items=[{
+            'name': auction.title,
+            'amount': int(auction.current_bid_price() * 100),
+            'currency': 'inr',
+            'quantity': 1,
+        }],
+        payment_intent_data={
+            'application_fee_amount': 123 * 100,
+            'transfer_data': {
+            'destination': auction.user.userprofile.stripe_account_id,
+            },
+        },
+        mode='payment',
+        success_url='http://127.0.0.1:8000/success',
+        cancel_url='http://127.0.0.1:8000/failure',
+        )
+        url = checkout_session.url
+        print(checkout_session)
+        return redirect(url)
+    return redirect('/' + str(auction_id) + '/checkout')
+
+@login_required(login_url='login')
+def success(request):
+    context = {
+    }
+    return render(request, 'auctions/success.html', context)
+
+@login_required(login_url='login')
+def failure(request):
+    context = {
+    }
+    return render(request, 'auctions/failure.html', context)

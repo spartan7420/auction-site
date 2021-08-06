@@ -128,18 +128,11 @@
                 <div class="your-auction-actions">
                     {% if auction.is_started and not auction.is_sold %}
                         <a href="" class="manage-btn green-btn">End By Selling</a>
-                        <a href="" class="manage-btn blue-btn">Manage Bids</a>
+                        <a href="{% url 'manageauction' auction.id %}" class="manage-btn blue-btn">Manage Auction</a>
                         <a href="" class="manage-btn grey-btn">End without Selling</a>
-                    {% elif auction.is_ended and not auction.is_sold %}
-                        <a href="" class="manage-btn grey-btn">View Bids</a>
-                    {% elif auction.is_ended and auction.is_sold %}
-                        <a href="" class="manage-btn blue-btn">Manage Order</a>
-                        <a href="" class="manage-btn grey-btn">View Bids</a>
-                    {% elif auction.is_started and auction.is_sold %}
-                        <a href="" class="manage-btn blue-btn">Manage Order</a>
-                        <a href="" class="manage-btn grey-btn">View Bids</a>
-                    {% elif auction.is_sheduled %}
-                        xyz
+                    {% else %}
+                        <a href="{% url 'manageauction' auction.id %}" class="manage-btn blue-btn">Manage Auction</a>
+
                     {% endif %}
 
                 </div>
