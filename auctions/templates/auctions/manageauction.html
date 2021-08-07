@@ -58,10 +58,20 @@
                         {% if auction.is_started and not auction.is_sold %}
                         <div class="detail"><span class="detail-text">Current Bid Price</span>
                             <span class="detail-value dark bold">
-                                ₹ {% if auction.current_bid_price %}
-                                {{ auction.current_bid_price }}
+                                {% if auction.current_bid_price %}
+                                    {% for curr in CURRENCIES %}
+                                        {% if curr.code == request.session.currency %}
+                                            {{ curr.symbol }}
+                                        {% endif %}
+                                    {% endfor %}
+                                    {{ auction.current_bid_price|currency:request.session.currency }}
                                 {% else %}
-                                {{ auction.opening_price }}
+                                    {% for curr in CURRENCIES %}
+                                        {% if curr.code == request.session.currency %}
+                                            {{ curr.symbol }}
+                                        {% endif %}
+                                    {% endfor %}
+                                    {{ auction.opening_price|currency:request.session.currency }}
                                 {% endif %}
                             </span>
                         </div>
@@ -73,10 +83,20 @@
                         {% elif auction.is_started and auction.is_sold %}
                         <div class="detail"><span class="detail-text">Final Price</span>
                             <span class="detail-value dark bold">
-                                ₹ {% if auction.current_bid_price %}
-                                {{ auction.current_bid_price }}
+                                {% if auction.current_bid_price %}
+                                    {% for curr in CURRENCIES %}
+                                        {% if curr.code == request.session.currency %}
+                                            {{ curr.symbol }}
+                                        {% endif %}
+                                    {% endfor %}
+                                        {{ auction.current_bid_price|currency:request.session.currency }}
                                 {% else %}
-                                {{ auction.opening_price }}
+                                    {% for curr in CURRENCIES %}
+                                    {% if curr.code == request.session.currency %}
+                                    {{ curr.symbol }}
+                                    {% endif %}
+                                    {% endfor %}
+                                    {{ auction.opening_price|currency:request.session.currency }}
                                 {% endif %}
                             </span>
                         </div>

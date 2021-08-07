@@ -127,9 +127,9 @@
                 </div>
                 <div class="your-auction-actions">
                     {% if auction.is_started and not auction.is_sold %}
-                        <a href="" class="manage-btn green-btn">End By Selling</a>
+                        <a href="{% url 'endbyselling' auction.id %}" class="manage-btn green-btn">End By Selling</a>
                         <a href="{% url 'manageauction' auction.id %}" class="manage-btn blue-btn">Manage Auction</a>
-                        <a href="" class="manage-btn grey-btn">End without Selling</a>
+                        <a href="{% url 'endwithoutselling' auction.id %}" onclick="return confirm('Are you sure you want to end this auction without selling?')" class="manage-btn grey-btn">End without Selling</a>
                     {% else %}
                         <a href="{% url 'manageauction' auction.id %}" class="manage-btn blue-btn">Manage Auction</a>
 

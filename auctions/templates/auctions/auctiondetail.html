@@ -153,6 +153,21 @@
             </a>
         </div>
         <div class="product-desc">
+            <div class="desc-title">Shipping</div>
+            <div class="desc-content">
+                    {% if not auction.shipping_price %}
+                    FREE
+                    {% else %}
+                    {% for curr in CURRENCIES %}
+                    {% if curr.code == request.session.currency %}
+                    {{ curr.symbol }}
+                    {% endif %}
+                    {% endfor %}
+                    {{ auction.shipping_price }}
+                    {% endif %}
+            </div>
+        </div>
+        <div class="product-desc">
             <div class="desc-title">Product Description</div>
             <div class="desc-content">
                 {{ auction.description }}

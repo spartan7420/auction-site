@@ -23,7 +23,7 @@ class UserProfile(models.Model):
     country = models.CharField(max_length=2, choices=pytz.country_names.items(), null=True)
     date_of_birth = models.DateField(null=True)
     reputation = models.IntegerField(default=0)
-    currency = models.ForeignKey(Currency, on_delete=models.CASCADE, null=True, blank=True)
+    currency = models.ForeignKey(Currency, on_delete=models.CASCADE, null=True, blank=True, default='INR')
     stripe_account_id = models.CharField(max_length=400, blank=True, null=True)
 
     def bid_count(self):
@@ -87,7 +87,12 @@ class Auction(models.Model):
         max_digits=15,
         decimal_places=2,
         validators=[MinValueValidator(Decimal('0.01'))], null=True, blank=True)
-
+    shipping_price = models.DecimalField(     
+        default=0,
+        max_digits=15,
+        decimal_places=2,
+        validators=[MinValueValidator(Decimal('0.00'))], null=True, blank=True)
+        
     def time_left(self):
         now = timezone.now()
         if(self.end_date > now):
@@ -270,18 +275,17 @@ class BuyRequest(models.Model):
         ('Accepted', 'Accepted'),
         ('Rejected', 'Rejected'),
     )
-    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
-    auction = models.ForeignKey(Auction, null=True, on_delete=models.SET_NULL)
-    status = models.CharField(max_length=200, choices=STATUS, default='Waiting')
+    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
+    auction = models.ForeignKey(Auction, null=True, blank=True, on_delete=models.SET_NULL)
+    status = models.CharField(max_length=200, blank=True, choices=STATUS, default='Waiting')
     created_at = models.DateTimeField(auto_now_add=True)
 
 class Order(models.Model):
-    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
-    auction = models.OneToOneField(Auction, null=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
+    auction = models.OneToOneField(Auction, null=True, blank=True, on_delete=models.SET_NULL)
     PAYMENT_METHOD = (
         ('Cash On Delivery', 'Cash On Delivery'),
-        ('UPI', 'UPi'),
-        ('Net Banking', 'Net Banking')
+        ('Pay with Debit Card/Credit Card', 'Debit Card/Credit Card'),
     )
     PAYMENT_STATUS = (
         ('Pending', 'Pending'),
@@ -297,10 +301,11 @@ class Order(models.Model):
         max_digits=15,
         decimal_places=2,
         validators=[MinValueValidator(Decimal('0.01'))], null=True, blank=True)
-    payment_method= models.CharField(max_length=200, null=True, choices=PAYMENT_METHOD)
-    payment_status= models.CharField(max_length=200, null=True, choices=PAYMENT_STATUS, default='Pending')
-    order_status= models.CharField(max_length=200, null=True, choices=ORDER_STATUS, default='Processing')
-    created_at = models.DateTimeField()
+
+    payment_method= models.CharField(max_length=200, null=True, blank=True, choices=PAYMENT_METHOD)
+    payment_status= models.CharField(max_length=200, null=True, blank=True, choices=PAYMENT_STATUS, default='Pending')
+    order_status= models.CharField(max_length=200, null=True, blank=True, choices=ORDER_STATUS, default='Processing')
+    created_at = models.DateTimeField(auto_now_add=True)
 
     
     def __str__(self):

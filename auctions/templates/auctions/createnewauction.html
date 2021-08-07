@@ -11,21 +11,43 @@
     <form action="" class="styled-form shrink form-center" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         
-        {{ form }}
 <!-- 
         <label for="id_start_date">Start Date</label>
         <input type="text" name="start_date" id="id_start_date">
 
         <label for="id_end_date">End Date</label>
         <input type="text" name="end_date" id="id_end_date"> -->
-        <label for="id_opening_price">Opening price (
-                                {% for curr in CURRENCIES %}
-                                {% if curr.code == request.session.currency %}
-                                {{ curr.symbol }}
-                                {% endif %}
-                                {% endfor %})</label>
-        <input type="number" name="opening_price" min="0" required id="id_opening_price">
-        <label for="id_buy_price">Buy price 
+        
+        {{ form.category.label }}
+        {{ form.category }}
+        
+        {{ form.title.label }}
+        {{ form.title }}
+
+        {{ form.description.label }}
+        {{ form.description }}
+
+        {{ form.details.label }}
+        {{ form.details }}
+
+        {{ form.start_date.label }}
+        {{ form.start_date }}
+
+        {{ form.end_date.label }}
+        {{ form.end_date }}
+
+        {{ form.status.label }}
+        {{ form.status }}
+
+        {{ form.opening_price.label }}
+        ({% for curr in CURRENCIES %}
+        {% if curr.code == request.session.currency %}
+        {{ curr.symbol }}
+        {% endif %}
+        {% endfor %})
+
+        {{ form.opening_price }}
+        {{ form.buy_price.label }}
             (
             {% for curr in CURRENCIES %}
             {% if curr.code == request.session.currency %}
@@ -33,9 +55,7 @@
             {% endif %}
             {% endfor %}
             )
-
-        </label>
-        <input type="number" name="buy_price" min="0" required id="id_buy_price">
+        {{ form.buy_price }}
         
         <label for="image">Upload Product Images</label>
         <input type="file" multiple id="image" name="image">

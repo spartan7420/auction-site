@@ -28,5 +28,8 @@ urlpatterns = [
     path('<int:buy_request_id>/rejectbuyrequest/', views.rejectbuyrequest, name='rejectbuyrequest'),
     path('<int:auction_id>/createbuyrequest/', views.createbuyrequest, name='createbuyrequest'),
     path('<int:auction_id>/manageauction/', views.manageauction, name='manageauction'),
+    path('<int:auction_id>/endwithoutselling/', views.endwithoutselling, name='endwithoutselling'),
+    path('<int:auction_id>/endbyselling/', views.endbyselling, name='endbyselling'),
+    path('orders/', views.orders, name='orders'),
 ]
 

@@ -17,7 +17,6 @@
         </div>
         {% endif %}
         {% for bid in bids %}
-        {% if bid.auction.is_started and not bid.auction.is_ended %}
         <div class="your-auction">
             <div class="action-container">
             </div>
@@ -148,17 +147,18 @@
                     {% endif %}
                 </div>
                 <div class="your-auction-actions">
-                    <div class="your-bid"><span class="detail-text">Your Bid</span>
-                        <span class="detail-value">
-                            {% for curr in CURRENCIES %}
-                                {% if curr.code == request.session.currency %}
-                                    {{ curr.symbol }}
-                                {% endif %}
-                            {% endfor %}
-                            {{ bid.amount|currency:request.session.currency }}
-                        </span>
-                    </div>
+
                     {% if bid.auction.is_started and not bid.auction.is_sold %}
+                        <div class="your-bid"><span class="detail-text">Your Bid</span>
+                            <span class="detail-value">
+                                {% for curr in CURRENCIES %}
+                                {% if curr.code == request.session.currency %}
+                                {{ curr.symbol }}
+                                {% endif %}
+                                {% endfor %}
+                                {{ bid.amount|currency:request.session.currency }}
+                            </span>
+                        </div>
                         <a href="{% url 'placebid' bid.auction.id %}" class="manage-btn blue-light-btn">Place Bid</a>
                         {% if not bid.buy_req %}
                             <a href="" class="manage-btn green-btn">Buy</a>
@@ -168,16 +168,23 @@
                                 <div>{{ bid.buy_req.status }}</div>
                             </div>
                         {% endif %}
-                    {% elif auction.is_ended and auction.is_sold %} 
-                    <!-- If not winner -->
-                    {% elif auction.is_started and auction.is_sold %}
-                    <a href="" class="manage-btn red-btn">Checkout</a>
+                    {% elif bid.auction.is_ended and bid.auction.is_sold and bid.auction.winner.user == user %}
+                    <div class="your-bid"><span class="detail-text">You Pay</span>
+                        <span class="detail-value">
+                            {% for curr in CURRENCIES %}
+                            {% if curr.code == request.session.currency %}
+                            {{ curr.symbol }}
+                            {% endif %}
+                            {% endfor %}
+                            {{ bid.amount|currency:request.session.currency }}
+                        </span>
+                    </div>
+                    <a href="{% url 'checkout' bid.auction.id %}" class="manage-btn red-btn">Checkout</a>
                     <p>Congratulations! You’ve won the Auction. Please proceed to the checkout page and make the payment.</p>
                     {% endif %}
                 </div>
             </div>
         </div>
-        {% endif %}
         {% endfor %}
     </div>
     {% else %}

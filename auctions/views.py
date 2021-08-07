@@ -220,10 +220,10 @@ def createnewauction(request):
     if request.method == 'POST':
         form = CreateAuctionForm(request.POST)
         current_currency = Currency.objects.get(code=request.session['currency']).factor
-        opening_default_curr = Decimal(form.cleaned_data.get('amount')) / current_currency
-        buy_default_curr = Decimal(form.cleaned_data.get('amount')) / current_currency
         if form.is_valid():
             auction = form.save(commit=False)
+            opening_default_curr = Decimal(form.cleaned_data.get('opening_price')) / current_currency
+            buy_default_curr = Decimal(form.cleaned_data.get('buy_price')) / current_currency
             auction.user = request.user
             auction.opening_price = opening_default_curr
             auction.buy_price = buy_default_curr
@@ -322,6 +322,27 @@ def rejectbuyrequest(request, buy_request_id):
     return redirect('manageauction')
 
 @login_required(login_url='login')
+def endwithoutselling(request, auction_id):
+    auction = Auction.objects.get(pk=auction_id)
+    auction.end_date = timezone.now()
+    auction.save()
+    messages.success(request, f"Auction ID {auction.id} has been ended successfully.")
+    return redirect('yourauctions')
+
+@login_required(login_url='login')
+def endbyselling(request, auction_id):
+    auction = Auction.objects.get(pk=auction_id)
+    auction.end_date = timezone.now()
+    auction.status = 'Sold'
+    auction.save()
+
+    winner_user = auction.bid_set.latest('created_at').user
+    Winner.objects.create(user=winner_user, auction=auction)
+
+    messages.success(request, f"Auction ID {auction.id} has been sold to User ID {winner_user.id}.")
+    return redirect('yourauctions')
+
+@login_required(login_url='login')
 def createstripeaccount(request):
     user = request.user
     if not user.userprofile.stripe_account_id:
@@ -336,11 +357,15 @@ def createstripeaccount(request):
 
 @login_required(login_url='login')
 def checkout(request, auction_id):
+    user = request.user
     auction = Auction.objects.get(pk=auction_id)
-    context = {
-        'auction': auction
-    }
-    return render(request, 'auctions/checkout.html', context)
+    if auction.winner.user == user:
+        context = {
+            'auction': auction
+        }
+        return render(request, 'auctions/checkout.html', context)
+    else:
+        return redirect('home')
 
 @login_required(login_url='login')
 def createcheckoutsession(request, auction_id):
@@ -380,3 +405,9 @@ def failure(request):
     context = {
     }
     return render(request, 'auctions/failure.html', context)
+
+@login_required(login_url='login')
+def orders(request):
+    context = {
+    }
+    return render(request, 'auctions/orders.html', context)

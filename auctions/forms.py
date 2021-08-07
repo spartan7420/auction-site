@@ -19,7 +19,11 @@ class CreateAuctionForm(ModelForm):
     class Meta:
         model = Auction
         fields = ['category', 'title', 'description', 'details'
-                  ,'start_date', 'end_date', 'status']
+                  ,'start_date', 'end_date', 'status', 'opening_price', 'buy_price', 'shipping_price']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.label_suffix = ""  # Removes : as label suffix
 
 class EditProfile(ModelForm):
     

@@ -53,6 +53,11 @@ nav {
   width: 100%;
 }
 
+nav select {
+  border-radius: 20px;
+  margin-top: 2px;
+}
+
 nav a {
   text-decoration: none;
   color: var(--light);
@@ -126,7 +131,7 @@ nav li {
 
 .currency select, .your-bids select {
   display: block;
-  width: 70px;
+  width: 64px;
   margin-left: 5px;
 }
 
@@ -1511,6 +1516,14 @@ hr {
 .styled-form a {
   text-decoration: none;
   color: var(--secondary);
+}
+
+.styled-form label, .styled-form select {
+  display: block;
+}
+
+.styled-form input, .styled-form textarea, .styled-form select {
+  margin: 0 0 20px 0;
 }
 
 .wrapper-bid-table {
