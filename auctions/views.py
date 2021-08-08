@@ -1,6 +1,6 @@
 from decimal import Context
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, response
 from .models import *
 from django.contrib.auth.forms import *
 from .forms import *
@@ -10,6 +10,7 @@ from .decorators import unauthenticated_user
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 import stripe
+import requests 
 
 stripe.api_key = settings.STRIPE_SECRET_KEY
 
@@ -107,17 +108,31 @@ def auctiondetail(request, auction_id):
 def dashboard(request):
     user = request.user
     if user.userprofile.stripe_account_id != None:
-        stripe_account_link = stripe.AccountLink.create(
-                    account=user.userprofile.stripe_account_id,
-                    refresh_url='http://127.0.0.1:8000/dashboard',
-                    return_url='http://127.0.0.1:8000/dashboard',
-                    type='account_onboarding',
-                )
-        context = {
-            'stripe_account_link': stripe_account_link
+        url = f'https://api.stripe.com/v1/accounts/{user.userprofile.stripe_account_id}'
+        header = {
+            'Authorization': f'Bearer {settings.STRIPE_SECRET_KEY}'
         }
-        return render(request, 'auctions/dashboard.html', context)
-
+        r = requests.get(url=url, headers=header)
+        response = r.json() 
+        
+        #Send onboarding link if it's not completed
+        if not response['charges_enabled']:
+            stripe_account_link = stripe.AccountLink.create(
+                        account=user.userprofile.stripe_account_id,
+                        refresh_url='http://127.0.0.1:8000/dashboard',
+                        return_url='http://127.0.0.1:8000/dashboard',
+                        type='account_onboarding',
+                    )
+            context = {
+                'stripe_account_link': stripe_account_link
+            }
+            return render(request, 'auctions/dashboard.html', context)
+        else:
+            context = {
+                'onboarded': True
+            }
+            return render(request, 'auctions/dashboard.html', context) 
+            
     context = {
 
     }
@@ -355,13 +370,37 @@ def createstripeaccount(request):
 
     return redirect('dashboard')
 
+
 @login_required(login_url='login')
-def checkout(request, auction_id):
+def selectpaymentmethod(request, auction_id):
+    auction = Auction.objects.get(pk=auction_id)
+
+    if request.method == 'POST':
+        paymethod = request.POST.get('paymethod')
+        return redirect(f'/{auction.id}/checkout/{paymethod}')
+        
+    context = {
+        'auction': auction
+    }
+    return render(request, 'auctions/selectpaymentmethod.html', context)
+
+@login_required(login_url='login')
+def checkout(request, auction_id, payment_method):
     user = request.user
     auction = Auction.objects.get(pk=auction_id)
+    price = auction.current_bid_price()
+    shipping = Decimal()
+    if not auction.shipping_price:
+        shipping = 0
+    else:
+        shipping = auction.shipping_price 
+    total = str(price + shipping)
+
     if auction.winner.user == user:
         context = {
-            'auction': auction
+            'auction': auction,
+            'payment_method': payment_method,
+            'total': total
         }
         return render(request, 'auctions/checkout.html', context)
     else:
@@ -369,6 +408,11 @@ def checkout(request, auction_id):
 
 @login_required(login_url='login')
 def createcheckoutsession(request, auction_id):
+    user = request.user
+    auction = Auction.objects.get(pk=auction_id)
+    payment_method = 'Debit Card/Credit Card'
+    Order.objects.create(user=user, auction=auction, payment_amount=auction.current_bid_price(), payment_method=payment_method)
+
     if request.method == 'POST':
         auction = Auction.objects.get(pk=auction_id)
         checkout_session = stripe.checkout.Session.create(
@@ -408,6 +452,18 @@ def failure(request):
 
 @login_required(login_url='login')
 def orders(request):
+    user = request.user
+    orders = user.order_set.all()
     context = {
+        'orders': orders
     }
     return render(request, 'auctions/orders.html', context)
+
+@login_required(login_url='login')
+def orderinfo(request, order_id):
+    order = Order.objects.get(pk=order_id)
+    context = {
+        'order': order
+    }
+    return render(request, 'auctions/orderinfo.html', context)
+

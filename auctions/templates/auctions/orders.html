@@ -1,10 +1,49 @@
 {% extends 'auctions/main.html' %}
+{% block title %}My orders{% endblock %}
 {% load static %}
+{% load currency %}
 {% block content %}
 <div class="wrapper">
     <div class="title">
         Your Orders
     </div><hr>
-    
+    {% for order in orders %}
+    <div class="your-auction">
+        <div class="your-auction-card">
+            <div class="your-auction-img">
+                <img src="{{ order.auction.auctionimage_set.all.first.image.url }}" alt="">
+            </div>
+            <div class="your-auction-details">
+                <div class="auction-title"><a href="{% url 'auctiondetail' order.auction.id %}">{{ order.auction.title }}</a></div>
+                <div class="your-auction-detail-box">
+                    <div class="detail"><span class="detail-text">Ordered on</span><span class="detail-value">
+                            {{ order.created_at }}</span></div>
+                    <div class="detail"><span class="detail-text">Price</span>
+                        <span class="detail-value dark bold">
+                            {% for curr in CURRENCIES %}
+                                {% if curr.code == request.session.currency %}
+                                    {{ curr.symbol }}
+                                {% endif %}
+                            {% endfor %}
+                            {% if auction.current_bid_price %}
+                                {{ order.auction.current_bid_price|currency:request.session.currency }}
+                            {% else %}
+                                {{ order.auction.opening_price|currency:request.session.currency }}
+                            {% endif %}
+
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="your-auction-status">
+                <div style="color: var(--dark-400);">Delivery Status</div>
+                <div style="color: var(--green);">{{ order.order_status }}</div>
+            </div>
+            <div class="your-auction-actions">
+                <a href="{% url 'orderinfo' order.id %}" class="manage-btn grey-btn">View Info</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
 </div>
 {% endblock %}

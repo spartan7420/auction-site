@@ -421,7 +421,7 @@ nav {
         font-size:  1.5rem !important;
     }
     .dashboard-container {
-        padding: 30px 10px 20px 10px !important;
+        padding: 30px 10px 100px 10px !important;
     }
     .dashboard-card {
         max-width: 150px;
@@ -766,7 +766,7 @@ hr {
         background-color: var(--bg-grey);
     }
     .dashboard-container {
-        padding: 30px 40px 20px 40px;  
+        padding: 30px 40px 100px 40px;  
     }
     .detail-container {
         padding: 50px 70px;
@@ -889,7 +889,7 @@ hr {
 }
 @media screen and (max-width: 600px) {
     .wrapper {
-        padding: 20px 10px;
+        padding: 20px 10px 100px 10px;
     }
     .top-section {
         grid-template-columns: 1fr;
@@ -1236,6 +1236,7 @@ hr {
 @media screen and (max-width: 600px) {
     .wrapper-bid-table {
         padding: 20px 10px;
+        overflow-x: scroll;
     }
 }
 .cancel {
@@ -1553,3 +1554,189 @@ hr {
   top: 1px;
 }
 
+// Select Payment Method
+.payment-method-container {
+    margin: 0 auto;
+    width: 600px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    .primary-btn {
+        border: none;
+        cursor: pointer;
+    }
+}
+.payment-method {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+    padding: 40px 20px;
+    border-radius: 10px;
+    border: 1px solid var(--light-border);
+    cursor: pointer;
+}
+@media screen and (max-width: 815px) {
+    .payment-method-container {
+        width: 100%;
+    }
+}
+
+
+// Checkout Page
+
+.checkout-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 100px;
+    .your-auction-card {
+        display: flex;
+        gap: 10px;
+        padding: 10px;
+        border: 1px solid var(--light-border);
+        font-size: 1.1rem;
+        margin: 0 0 20px 0;
+        .detail-value {
+            color: var(--dark-400);
+        }
+        .auction-title {
+            font-weight: 500;
+        }
+    }
+    .your-auction-img {
+        width: 240px;
+    }
+    .primary-btn {
+        text-transform: none;
+    }
+}
+.primary-btn {
+    border: none;
+    margin: 20px 0;
+    cursor: pointer;
+}
+
+.checkout-order-info-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: var(--dark-600);
+    margin-bottom: 20px;
+}
+.your-auction-detail-box {
+    padding-right: 10px;
+}
+.checkout-more-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.checkout-detail-title {
+    font-weight: 400;
+}
+.checkout-detail-value {
+    font-weight: 300;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+.order-summary-detail {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.2rem;
+}
+
+// Order Info
+.order-info-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    margin-bottom: 40px;
+}
+.order-detail {
+    display: flex;
+    justify-content: space-between;
+}
+.order-detail-header {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: var(--dark-600);
+    margin-bottom: 20px;
+}
+.order-value {
+    color: var(--dark-400);
+    font-weight: 300;
+}
+.your-auction-card-order {
+    display: grid;
+    grid-template-columns: 0.4fr 1fr 1fr;
+}
+.manage-order-container {
+    margin-top: 20px;
+}
+.manage-order-detail-container {
+    border: 1px solid var(--light-border);
+}
+.manage-order-title {
+    font-size: 1.6rem;
+    color: var(--primary);
+    font-weight: 500;
+    margin-top: 20px;
+}
+.manage-order-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+.manage-order-detail {
+    margin: 10px 0 10px 10px;
+}
+.manage-order-detail-header {
+    background-color: var(--primary);
+    color: var(--light);
+    padding: 5px 10px;
+}
+.manage-order-detail-value {
+    color: var(--dark-600);
+    font-weight: 300;
+}
+@media screen and (max-width: 1157px) {
+    .order-info-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .your-auction-card-order {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    .manage-order-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+// Footer
+footer {
+    padding: 0 100px 40px 100px;
+}
+.back-to-top-btn {
+    display: block;
+    text-align: center;
+    padding: 10px 0;
+    margin: 0 auto;
+    color: var(--light);
+    text-decoration: none;
+    i {
+        margin-right: 10px;
+    }
+}
+.footer-site-title {
+    font-size: 1.4rem;
+    margin: 20px 0;
+}
+.footer-link {
+    font-weight: 200;
+}
+@media screen and (max-width: 600px) {
+    footer {
+        padding: 0;
+    }
+    .footer-site-title, .footer-link {
+        text-align: center
+    }
+}

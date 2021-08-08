@@ -60,11 +60,13 @@
         </div>
         <div class="dashboard-title">Payment Set Up</div>
         <hr>
-        {% if not stripe_account_link %}
+        {% if not stripe_account_link and not onboarded %}
             <a href="{% url 'create-stripe-account' %}" class="stripe-connect"><span>Connect with</span></a>
             <br />
-        {% else %}
+        {% elif stripe_account_link and not onboarded %}
             <a href="{{ stripe_account_link.url }}">Complete your Stripe Account Setup to Create Auctions</a>
+        {% elif not stripe_account_link and onboarded %}
+            Your stripe account is connected.
         {% endif %}
     </div>
 </div>

@@ -1,14 +1,148 @@
 {% extends 'auctions/main.html' %}
 
-{% block title %}Dashboard{% endblock %}
-
+{% block title %}Checkout{% endblock %}
+{% load currency %}
 {% load static %}
 {% block content %}
 <div class="wrapper">
-    <form action="{% url 'create-checkout-session' auction.id %}" method="POST">
-        {% csrf_token%}
-        <button type="submit">Checkout</button>
-    </form>
+    <div class="title">Checkout</div><hr>
+    <div class="checkout-container">
+        <div class="checkout-order-info">
+            <div class="checkout-order-info-title">Order Details</div>
+            <div class="your-auction-card">
+                <div class="your-auction-img">
+                    <img src="{{ auction.auctionimage_set.all.first.image.url }}" alt="">
+                </div>
+                <div class="your-auction-details">
+                    <div class="auction-title"><a href="{% url 'auctiondetail' auction.id %}">{{ auction.title }}</a></div>
+                    <div class="your-auction-detail-box">
+                        <div class="detail">
+                            <span class="detail-text">Price</span>
+                            <span class="detail-value blue">
+                                {% for curr in CURRENCIES %}
+                                    {% if curr.code == request.session.currency %}
+                                        {{ curr.symbol }}
+                                    {% endif %}
+                                {% endfor %}
+                                {{ auction.current_bid_price|currency:request.session.currency }}
+                            </span>
+                        </div>
+                        <div class="detail">
+                            <span class="detail-text">Seller ID</span>
+                            <span class="detail-value">
+                                {{ auction.user.id }}
+                            </span>
+                        </div>
+                        <div class="detail">
+                            <span class="detail-text">Sold on</span>
+                            <span class="detail-value">
+                                {{ auction.end_date }}
+                            </span>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+
+            <div class="checkout-more-details">
+                <div class="checkout-detail-container">
+                    <div class="checkout-order-info-title">Shipping Details</div>
+                    <div class="checkout-order-details">
+                        <div class="checkout-detail-title">Buyer ID</div>
+                        <div class="checkout-detail-value">{{ auction.winner.id }}</div>
+                    </div>
+                    <div class="checkout-order-details">
+                        <div class="checkout-detail-title">Firstname</div>
+                        <div class="checkout-detail-value">{{ auction.user.userprofile.first_name }}</div>
+                    </div>
+                    <div class="checkout-order-details">
+                        <div class="checkout-detail-title">Lastname</div>
+                        <div class="checkout-detail-value">{{ auction.user.userprofile.last_name }}</div>
+                    </div>
+                    <div class="checkout-order-details">
+                        <div class="checkout-detail-title">Address</div>
+                        <div class="checkout-detail-value">{{ auction.user.userprofile.address }}</div>
+                    </div>
+                    <div class="checkout-order-details">
+                        <div class="checkout-detail-title">Phone</div>
+                        <div class="checkout-detail-value">{{ auction.user.userprofile.phone }}</div>
+                    </div>
+                </div>
+                <div class="checkout-detail-container">
+                    <div class="checkout-order-info-title">Payment Details</div>
+                    <div class="checkout-order-details">
+                        <div class="checkout-detail-title">Payment Method</div>
+                        <div class="checkout-detail-value">
+                            {% if payment_method == 'cod' %}
+                                Cash on delivery
+                            {% elif pay_method == 'card' %}
+                                Credit/Debit Card
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="checkout-order-details">
+                        <div class="checkout-detail-title">Payment Status</div>
+                        <div class="checkout-detail-value">Pending</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="checkout-order-summary">
+            <div class="checkout-order-info-title">
+                Order Summary
+            </div><hr>
+            <div class="order-summary-detail">
+                <div class="order-summary-detail-title">Price</div>
+                <div class="order-summary-detail-value">
+                                {% for curr in CURRENCIES %}
+                                    {% if curr.code == request.session.currency %}
+                                        {{ curr.symbol }}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if auction.current_bid_price %}
+                                    {{ auction.current_bid_price|currency:request.session.currency }}
+                                {% endif %}
+                </div>
+            </div>
+            <div class="order-summary-detail">
+                <div class="order-summary-detail-title">Shipping Price</div>
+                <div class="order-summary-detail-value blue">
+                                {% for curr in CURRENCIES %}
+                                    {% if curr.code == request.session.currency %}
+                                        {{ curr.symbol }}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if not auction.shipping_price %}
+                                    0
+                                {% else %}
+                                    {{ auction.shipping_price|currency:request.session.currency }}
+                                {% endif %}
+                </div>
+            </div><hr>
+            <div class="order-summary-detail">
+                <div class="order-summary-detail-title">Total Amount</div>
+                <div class="order-summary-detail-value blue">
+                                {% for curr in CURRENCIES %}
+                                    {% if curr.code == request.session.currency %}
+                                        {{ curr.symbol }}
+                                    {% endif %}
+                                {% endfor %}
+                                {{ total|currency:request.session.currency }}
+                </div>
+            </div>
+            {% if payment_method == 'card' %}
+            <form action="{% url 'create-checkout-session' auction.id %}" method="POST">
+                {% csrf_token%}
+                <button type="submit" class="primary-btn">Pay & Confirm Order</button>
+            </form>
+            {% elif payment_method == 'cod' %}
+            <form action="" method="POST">
+                {% csrf_token%}
+                <button type="submit" class="primary-btn">Confirm Order</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
 </div>
 
 {% endblock %}

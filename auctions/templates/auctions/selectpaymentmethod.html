@@ -1,0 +1,35 @@
+{% extends 'auctions/main.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% load static %}
+{% block content %}
+<div class="wrapper">
+    <div class="title">Select a payment method</div><hr>
+    <form action="" method="POST">
+        <div class="payment-method-container">
+            {% csrf_token %}
+
+                <label class="payment-method">
+                    <input type="radio" checked name="paymethod" value="card">
+                    <div class="payment-method-info">
+                        <div class="payment-method-title">Pay with Debit Card/Credit Card</div>
+                        <div class="payment-method-desc"></div>
+                    </div>
+                </label>
+
+                <label class="payment-method">
+                    <input type="radio" name="paymethod" value="cod">
+                    <div class="payment-method-info">         
+                        <div class="payment-method-title">Cash on delivery</div>
+                        <div class="payment-method-desc"></div>
+                    </div>
+                </label>
+            <input type="submit" value="Next" class="primary-btn">
+
+        </div>
+    </form>
+
+</div>
+
+{% endblock %}

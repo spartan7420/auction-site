@@ -21,7 +21,8 @@ urlpatterns = [
     path('failure/', views.failure, name='failure'),
     path('create-stripe-account/', views.createstripeaccount, name='create-stripe-account'),
     path('<int:auction_id>/create-checkout-session/', views.createcheckoutsession, name='create-checkout-session'),
-    path('<int:auction_id>/checkout/', views.checkout, name='checkout'),
+    path('<int:auction_id>/selectpaymentmethod/', views.selectpaymentmethod, name='selectpaymentmethod'),
+    path('<int:auction_id>/checkout/<str:payment_method>', views.checkout, name='checkout'),
     path('<int:auction_id>/editauction/', views.editauction, name='editauction'),
     path('<int:auction_id>/deleteauction/', views.deleteauction, name='deleteauction'),
     path('<int:bid_id>/deletebid/', views.deletebid, name='deletebid'),
@@ -31,5 +32,6 @@ urlpatterns = [
     path('<int:auction_id>/endwithoutselling/', views.endwithoutselling, name='endwithoutselling'),
     path('<int:auction_id>/endbyselling/', views.endbyselling, name='endbyselling'),
     path('orders/', views.orders, name='orders'),
+    path('<int:order_id>/orderinfo/', views.orderinfo, name='orderinfo'),
 ]
 

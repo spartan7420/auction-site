@@ -171,16 +171,16 @@
                     <a href="" class="manage-btn grey-btn">End without Selling</a>
                     {% elif auction.is_ended and not auction.is_sold %}
                     {% elif auction.is_ended and auction.is_sold %}
-                    <a href="" class="manage-btn blue-btn">Manage Order</a>
+                    <a href="{% url 'auctiondetail' auction.id %}" class="manage-btn blue-btn">View</a>
                     {% elif auction.is_started and auction.is_sold %}
-                    <a href="" class="manage-btn blue-btn">Manage Order</a>
+                    <a href="{% url 'auctiondetail' auction.id %}" class="manage-btn blue-btn">View</a>
                     {% elif auction.is_sheduled %}
-                    xyz
+        
                     {% endif %}
         
                 </div>
             </div>
-
+        </div>
             <div class="more-info-container">
                 <div class="buy-request-list">
                     <div class="buy-request-title">
@@ -248,6 +248,88 @@
                     </table>
                 </div>
             </div>
+
+            {% if auction.order %}
+            <div class="manage-order-title">Manage Order</div><hr>
+            <div class="manage-order-container">
+
+                <div class="manage-order-detail-container">
+                    <div class="manage-order-detail-header">Buyer Details</div>
+                    <div class="manage-order-detail">
+                        <div class="manage-order-detail-title">Buyer ID</div>
+                        <div class="manage-order-detail-value">{{ auction.order.user.id }}</div>
+                    </div>
+                    <div class="manage-order-detail">
+                        <div class="manage-order-detail-title">Firstname</div>
+                        <div class="manage-order-detail-value">{{ auction.order.user.userprofile.first_name }}</div>
+                    </div>
+                    <div class="manage-order-detail">
+                        <div class="manage-order-detail-title">Lastname</div>
+                        <div class="manage-order-detail-value">{{ auction.order.user.userprofile.last_name }}</div>
+                    </div>
+                    <div class="manage-order-detail">
+                        <div class="manage-order-detail-title">Address</div>
+                        <div class="manage-order-detail-value">{{ auction.order.user.userprofile.address}}</div>
+                    </div>
+                    <div class="manage-order-detail">
+                        <div class="manage-order-detail-title">Phone</div>
+                        <div class="manage-order-detail-value">{{ auction.order.user.userprofile.phone}}</div>
+                    </div>
+                </div>
+                
+
+                <div class="manage-order-detail-container">
+                    <div class="manage-order-detail-header">Payment Details</div>
+                    <div class="manage-order-detail">
+                        <div class="manage-order-detail-title">Final Price</div>
+                        <div class="manage-order-detail-value">
+                            {% for curr in CURRENCIES %}
+                                {% if curr.code == request.session.currency %}
+                                    {{ curr.symbol }}
+                                {% endif %}
+                            {% endfor %}
+                            {{ auction.order.payment_amount }}
+                        </div>
+                    </div>
+                    <div class="manage-order-detail">
+                        <div class="manage-order-detail-title">Shipping Price</div>
+                        <div class="manage-order-detail-value">
+                            {% for curr in CURRENCIES %}
+                                {% if curr.code == request.session.currency %}
+                                    {{ curr.symbol }}
+                                {% endif %}
+                            {% endfor %}
+
+                            {% if not auction.shipping_price %}
+                            0
+                            {% else %}
+                            {{ auction.shipping_price|currency:request.session.currency }}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="manage-order-detail">
+                        <div class="manage-order-detail-title">Payment Method</div>
+                        <div class="manage-order-detail-value">{{ auction.order.payment_method }}</div>
+                    </div>
+                    <div class="manage-order-detail">
+                        <div class="manage-order-detail-title">Payment Status </div>
+                        <div class="manage-order-detail-value">{{ auction.order.payment_status }}</div>
+                    </div>
+                </div>
+                <div class="manage-order-detail-container">
+                    <div class="manage-order-detail-header">Order Details</div>
+                    <div class="manage-order-detail">
+                        <div class="manage-order-detail-title">Order ID</div>
+                        <div class="manage-order-detail-value">{{ auction.order.id }}</div>
+                    </div>
+                    <div class="manage-order-detail">
+                        <div class="manage-order-detail-title">Order Status </div>
+                        <div class="manage-order-detail-value">{{ auction.order.order_status }}</div>
+                    </div>
+                </div> 
+
+            </div>
+            {% endif %}
         </div>
     {% else %}
         We couldn't find what you're looking for.
