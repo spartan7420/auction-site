@@ -1780,3 +1780,24 @@ footer {
         text-align: center
     }
 }
+
+.paginator-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    gap: 10px;
+    .previous-page, .next-page {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        a {
+            border-radius: 10px;
+            text-align: center;
+            text-decoration: none;
+            padding: 10px 20px;
+            background-color: var(--primary);
+            color: var(--light);
+            width: 100px;
+        }
+    }
+}

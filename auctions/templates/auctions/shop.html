@@ -4,6 +4,7 @@
 {% block title %}Shop{% endblock %}
 
 {% block content %}
+
 <div class="wrapper-shop">
     <div class="category-list">
         <div class="category-list-title"><span class="category-list-title-1">AUCTION</span> <span
@@ -102,6 +103,21 @@
             <p>No Auctions Found</p>
             {% endif %}
             </div>
+            <div class="paginator-container">
+                {% if auctions.has_previous %}
+                <div class="previous-page">
+                    <a href="{% url 'shop' %}?page={{ auctions.previous_page_number }}">Previous</a>
+                </div>
+                {% endif %}
+                {% if auctions.has_next %}
+                <div class="next-page">
+                    <a href="{% url 'shop' %}?page={{ auctions.next_page_number }}">Next</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
     </div>
+
 </div>
 {% endblock %}

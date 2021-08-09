@@ -9,6 +9,7 @@ from django.contrib.auth import authenticate, login, logout
 from .decorators import unauthenticated_user
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator, EmptyPage
 import stripe
 import requests 
 
@@ -83,8 +84,17 @@ def registerPage(request):
 
 def shop(request):
     auctions = Auction.objects.all() 
+    p = Paginator(auctions, 20)
+
+    page_num = request.GET.get('page', 1)
+
+    try: 
+        page = p.page(page_num)
+    except EmptyPage:
+        page = p.page(1)
+
     context = {
-        'auctions': auctions
+        'auctions': page
     }
     return render(request, 'auctions/shop.html', context)
 
@@ -98,8 +108,18 @@ def category_list(request):
 def auctionsbycategory(request, category_slug):
     category = Category.objects.get(slug=category_slug)
     auctions = category.auction_set.all()
+
+    p = Paginator(auctions, 20)
+
+    page_num = request.GET.get('page', 1)
+
+    try: 
+        page = p.page(page_num)
+    except EmptyPage:
+        page = p.page(1)
+
     context = {
-        'auctions': auctions,
+        'auctions': page,
         'category': category
     }
     return render(request, 'auctions/auctionsbycategory.html', context)
