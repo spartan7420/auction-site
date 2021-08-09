@@ -165,8 +165,7 @@ nav li {
 
 .site-title {
   font-size: 1rem;
-  width: 200px;
-  margin-right: 100px;
+  width: 160px;
   padding-left: 5px;
 }
 
@@ -206,6 +205,7 @@ nav li {
 
 .search-container {
   width: 100%;
+  max-width: 550px;
   position: relative;
 }
 
@@ -228,7 +228,6 @@ nav li {
           flex: 1;
   outline: none;
   border: none;
-  border-radius: 0px;
   padding: 10px 20px;
 }
 
@@ -457,6 +456,7 @@ nav li {
   .site-title {
     font-size: 1rem;
     margin-right: 20px;
+    margin-left: 0;
   }
   nav {
     padding: 0 60px;
@@ -587,8 +587,8 @@ nav li {
 
 @media screen and (max-width: 468px) {
   .middle-section-content {
-    -ms-grid-columns: 1fr !important;
-        grid-template-columns: 1fr !important;
+    gap: 0 !important;
+    padding: 0;
   }
   .auction-card {
     min-width: 100%;
@@ -632,7 +632,7 @@ nav li {
   .site-title {
     position: absolute;
     top: 4px;
-    left: 20px;
+    left: 10px;
   }
   .burger {
     position: absolute;
@@ -750,14 +750,12 @@ hr {
 
 .auction-img {
   max-height: 100%;
-  max-width: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  -o-object-fit: contain;
+     object-fit: contain;
 }
 
 .auction-img-container {
   height: 150px;
-  border: 1px solid var(--light-border);
   text-align: center;
   overflow: hidden;
 }
@@ -1256,7 +1254,8 @@ hr {
         grid-template-columns: 1fr;
   }
   .wrapper-shop .middle-section {
-    padding: 20px;
+    padding-left: 0px;
+    padding-right: 0px;
     margin-top: 0px;
   }
   .wrapper-shop .category-list {
@@ -1264,6 +1263,17 @@ hr {
   }
   .wrapper-shop .auction-card {
     max-width: 200px;
+  }
+  .wrapper-shop .primary-btn, .wrapper-shop .secondary-btn {
+    font-size: 0.7rem;
+    height: 30px;
+    line-height: 30px;
+  }
+  .wrapper-shop .day-value, .wrapper-shop .hr-value, .wrapper-shop .min-value {
+    font-size: 0.9rem;
+  }
+  .wrapper-shop .detail-text, .wrapper-shop .detail-value {
+    font-size: 0.8rem;
   }
   #lens {
     display: none;
@@ -1292,6 +1302,10 @@ hr {
 }
 
 @media screen and (max-width: 469px) {
+  .middle-section {
+    padding-right: 0;
+    padding-left: 0;
+  }
   .auction-card {
     max-width: 100%;
     margin: 0 auto;
@@ -1618,6 +1632,7 @@ hr {
   background-color: var(--primary);
   color: var(--light);
   border-radius: 3px;
+  margin: 10px 0;
   width: -webkit-fit-content;
   width: -moz-fit-content;
   width: fit-content;

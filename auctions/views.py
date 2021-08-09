@@ -560,17 +560,32 @@ def createcheckoutsession(request, auction_id):
 @login_required(login_url='login')
 def success(request, auction_id):
     auction = Auction.objects.get(pk=auction_id)
-    auction.order.payment_status = 'Paid'
-    auction.order.save()
-    context = {
-    }
-    return render(request, 'auctions/success.html', context)
+    try:
+        if auction.order.user == 'user':
+            auction.order.payment_status = 'Paid'
+            auction.order.save()
+            context = {
+            }
+            return render(request, 'auctions/success.html', context)
+        else:
+            return redirect('home')
+    except: 
+        return redirect('home')
+
 
 @login_required(login_url='login')
 def failure(request, auction_id):
-    context = {
-    }
-    return render(request, 'auctions/failure.html', context)
+    auction = Auction.objects.get(pk=auction_id)
+    try:
+        if auction.order.user == 'user':
+            context = {
+            }
+            return render(request, 'auctions/failure.html', context)
+        else: 
+            return redirect('home')
+    except:
+        return redirect('home')
+
 
 @login_required(login_url='login')
 def orders(request):
