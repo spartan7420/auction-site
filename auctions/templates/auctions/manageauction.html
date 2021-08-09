@@ -1,4 +1,5 @@
 {% extends 'auctions/main.html' %}
+{% block title %}Manage Auction{% endblock %}
 {% load static %}
 {% load currency %}
 {% block content %}
@@ -186,7 +187,9 @@
                     <div class="buy-request-title">
                         Buy Requests
                     </div>
-                    {% if auction.buyrequest_set.all.count > 0 %}
+                    {% if auction.is_sold %}
+                        Auction has been ended.
+                    {% elif auction.buyrequest_set.all.count > 0%}
                     {% for buy_req in auction.buyrequest_set.all %}
                     <div class="buy-request">
                         <div class="date-time">{{ buy_req.created_at }}</div>
@@ -195,7 +198,7 @@
                             <div class="user-name">{{ buy_req.user.userprofile.first_name }}</div>
 
                             {% if buy_req.status == 'Waiting' %}
-                            <a href="" class="btn blue margin-rt-5">SELL</a>
+                            <a href="{% url 'endbysellrequest' auction.id buy_req.user.id %}" class="btn blue margin-rt-5">SELL</a>
                             <a href="{% url 'rejectbuyrequest' buy_req.id %}" class="btn red"
                             onclick="return confirm('Are you sure you want to reject this buy request?')">REJECT</a>
                             {% else %}
@@ -324,7 +327,17 @@
                     </div>
                     <div class="manage-order-detail">
                         <div class="manage-order-detail-title">Order Status </div>
-                        <div class="manage-order-detail-value">{{ auction.order.order_status }}</div>
+                        <div class="manage-order-detail-value"><span>{{ auction.order.order_status }}</span>
+                            <form id="edit_order_status" action="" method="POST">
+                                {% csrf_token %}
+                                {{ form.order_status }}
+                            </form>
+                            <script>
+                                $('#id_order_status').change(function() {
+                                    $('#edit_order_status').submit();
+                                });
+                            </script>
+                        </div>
                     </div>
                 </div> 
 

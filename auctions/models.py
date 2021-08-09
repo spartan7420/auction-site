@@ -56,23 +56,20 @@ def update_profile(sender, instance, created, **kwargs):
 
 post_save.connect(update_profile, sender=User)
 
+class Category(models.Model):
+    category = models.CharField(max_length=200, null=True)
+    slug = models.SlugField(max_length=200, null=True, blank=True)
+
+    def __str__(self):
+        return str(self.category)
 
 class Auction(models.Model):
-    CATEGORY = (
-        ('Mobiles & Electronics', 'Mobiles & Electronics'),
-        ('Apparel', 'Apparel'),
-        ('Furniture', 'Furniture'),
-        ('Vehicles & Accessories', 'Vehicles & Accessories'),
-        ('Sports', 'Sports'),
-        ('Entertainment', 'Entertainment'),
-        ('Home & Garden', 'Home & Garden'),
-    )
     STATUS = (
         ('Unsold', 'Unsold'),
         ('Sold', 'Sold'),
     )
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
-    category = models.CharField(max_length=200, null=True, choices=CATEGORY)
+    category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
     title = models.CharField(max_length=200, null=True)
     description = models.TextField(max_length=1000, null=True)
     details = models.TextField(max_length=1000, null=True)

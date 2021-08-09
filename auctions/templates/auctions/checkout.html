@@ -24,7 +24,11 @@
                                         {{ curr.symbol }}
                                     {% endif %}
                                 {% endfor %}
-                                {{ auction.current_bid_price|currency:request.session.currency }}
+                                {% if buyreq %}
+                                    {{ auction.buy_price|currency:request.session.currency }}
+                                {% elif auction.current_bid_price %}
+                                    {{ auction.current_bid_price|currency:request.session.currency }}
+                                {% endif %}
                             </span>
                         </div>
                         <div class="detail">
@@ -99,7 +103,9 @@
                                         {{ curr.symbol }}
                                     {% endif %}
                                 {% endfor %}
-                                {% if auction.current_bid_price %}
+                                {% if buyreq %}
+                                    {{ auction.buy_price|currency:request.session.currency }}
+                                {% elif auction.current_bid_price %}
                                     {{ auction.current_bid_price|currency:request.session.currency }}
                                 {% endif %}
                 </div>

@@ -88,6 +88,23 @@ def shop(request):
     }
     return render(request, 'auctions/shop.html', context)
 
+def category_list(request):
+    categories = Category.objects.all().order_by('category')
+    context = {
+        'categories': categories
+    }
+    return context
+
+def auctionsbycategory(request, category_slug):
+    category = Category.objects.get(slug=category_slug)
+    auctions = category.auction_set.all()
+    context = {
+        'auctions': auctions,
+        'category': category
+    }
+    return render(request, 'auctions/auctionsbycategory.html', context)
+
+
 def auctiondetail(request, auction_id):
     auction = Auction.objects.get(pk=auction_id)
     if request.user.is_authenticated:
@@ -276,6 +293,11 @@ def yourbids(request):
             b.buy_req = buy_req
         bids.append(b)
 
+    for buy_req in BuyRequest.objects.all():
+        if buy_req.user == user:
+            buy_req.buy_req = buy_req
+            bids.append(buy_req)
+
     context = {
         'bids': bids,
     }
@@ -312,12 +334,29 @@ def deleteauction(request, auction_id):
 def manageauction(request, auction_id):
     auction = Auction.objects.get(pk=auction_id)
     bids = auction.bid_set.all().order_by('-created_at')
+    try:
+        if auction.order:
+            form = EditOrderStatus(instance=auction.order)
 
-    context = {
-        'auction': auction,
-        'bids': bids
-    }
-    return render(request, 'auctions/manageauction.html', context)
+            if request.method == 'POST':
+                form = EditOrderStatus(request.POST, instance=auction.order)
+                if form.is_valid():
+                    form.save()
+                    messages.success(request, 'Order status was updated successfully.')
+                    return redirect('/' + str(auction_id) + '/manageauction')
+
+            context = {
+                'auction': auction,
+                'bids': bids,
+                'form': form
+            }
+            return render(request, 'auctions/manageauction.html', context)
+    except:
+        context = {
+            'auction': auction,
+            'bids': bids
+        }
+        return render(request, 'auctions/manageauction.html', context)
 
 
 @login_required(login_url='login')
@@ -358,6 +397,21 @@ def endbyselling(request, auction_id):
     return redirect('yourauctions')
 
 @login_required(login_url='login')
+def endbysellrequest(request, auction_id, buyer_id):
+    user = User.objects.get(pk=buyer_id)
+    auction = Auction.objects.get(pk=auction_id)
+    auction.end_date = timezone.now()
+    auction.status = 'Sold'
+    auction.buyrequest_set.get(user=user).status = 'Accepted'
+    auction.buyrequest_set.get(user=user).save()
+    auction.save()
+
+    Winner.objects.create(user=user, auction=auction)
+
+    messages.success(request, f"Auction ID {auction.id} has been sold to User ID {user.id}.")
+    return redirect('/' + str(auction.id) + '/manageauction')
+
+@login_required(login_url='login')
 def createstripeaccount(request):
     user = request.user
     if not user.userprofile.stripe_account_id:
@@ -388,21 +442,40 @@ def selectpaymentmethod(request, auction_id):
 def checkout(request, auction_id, payment_method):
     user = request.user
     auction = Auction.objects.get(pk=auction_id)
-    price = auction.current_bid_price()
-    shipping = Decimal()
-    if not auction.shipping_price:
-        shipping = 0
-    else:
-        shipping = auction.shipping_price 
-    total = str(price + shipping)
-
     if auction.winner.user == user:
-        context = {
-            'auction': auction,
-            'payment_method': payment_method,
-            'total': total
-        }
-        return render(request, 'auctions/checkout.html', context)
+        if auction.buyrequest_set.get(user=user).status == 'Accepted':
+            price = auction.buy_price
+            shipping = Decimal()
+
+            if not auction.shipping_price:
+                shipping = 0
+            else:
+                shipping = auction.shipping_price 
+            total = str(price + shipping)
+
+            context = {
+                'auction': auction,
+                'payment_method': payment_method,
+                'total': total,
+                'buyreq': True
+            }
+            return render(request, 'auctions/checkout.html', context)
+        else:
+            price = auction.current_bid_price()
+            shipping = Decimal()
+
+            if not auction.shipping_price:
+                shipping = 0
+            else:
+                shipping = auction.shipping_price 
+            total = str(price + shipping)
+
+            context = {
+                'auction': auction,
+                'payment_method': payment_method,
+                'total': total
+            }
+            return render(request, 'auctions/checkout.html', context)
     else:
         return redirect('home')
 
@@ -411,41 +484,90 @@ def createcheckoutsession(request, auction_id):
     user = request.user
     auction = Auction.objects.get(pk=auction_id)
     payment_method = 'Debit Card/Credit Card'
-    Order.objects.create(user=user, auction=auction, payment_amount=auction.current_bid_price(), payment_method=payment_method)
+    buy_req = False
+    total = 0
+    if auction.buyrequest_set.get(user=user).status == 'Accepted':
+        price = auction.buy_price
+        shipping = Decimal()
+
+        if not auction.shipping_price:
+            shipping = 0
+        else:
+            shipping = auction.shipping_price 
+        total = price + shipping
+        Order.objects.create(user=user, auction=auction, payment_amount=total, payment_method=payment_method)
+        buy_req = True
+    else:
+        price = auction.current_bid_price()
+        shipping = Decimal()
+
+        if not auction.shipping_price:
+            shipping = 0
+        else:
+            shipping = auction.shipping_price 
+        total = price + shipping
+        Order.objects.create(user=user, auction=auction, payment_amount=total, payment_method=payment_method)
 
     if request.method == 'POST':
-        auction = Auction.objects.get(pk=auction_id)
-        checkout_session = stripe.checkout.Session.create(
-        payment_method_types=['card'],
-        line_items=[{
-            'name': auction.title,
-            'amount': int(auction.current_bid_price() * 100),
-            'currency': 'inr',
-            'quantity': 1,
-        }],
-        payment_intent_data={
-            'application_fee_amount': 123 * 100,
-            'transfer_data': {
-            'destination': auction.user.userprofile.stripe_account_id,
+        if buy_req:
+            auction = Auction.objects.get(pk=auction_id)
+            checkout_session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[{
+                'name': auction.title,
+                'amount': int(total * 100),
+                'currency': 'inr',
+                'quantity': 1,
+            }],
+            payment_intent_data={
+                'application_fee_amount': 123 * 100,
+                'transfer_data': {
+                'destination': auction.user.userprofile.stripe_account_id,
+                },
             },
-        },
-        mode='payment',
-        success_url='http://127.0.0.1:8000/success',
-        cancel_url='http://127.0.0.1:8000/failure',
-        )
-        url = checkout_session.url
-        print(checkout_session)
-        return redirect(url)
+            mode='payment',
+            success_url=f'http://127.0.0.1:8000/{auction.id}/success',
+            cancel_url=f'http://127.0.0.1:8000/{auction.id}/failure',
+            )
+            url = checkout_session.url
+            print(checkout_session)
+            return redirect(url)
+        else:
+            auction = Auction.objects.get(pk=auction_id)
+            checkout_session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[{
+                'name': auction.title,
+                'amount': int(total * 100),
+                'currency': 'inr',
+                'quantity': 1,
+            }],
+            payment_intent_data={
+                'application_fee_amount': 123 * 100,
+                'transfer_data': {
+                'destination': auction.user.userprofile.stripe_account_id,
+                },
+            },
+            mode='payment',
+            success_url=f'http://127.0.0.1:8000/{auction.id}/success',
+            cancel_url=f'http://127.0.0.1:8000/{auction.id}/failure',
+            )
+            url = checkout_session.url
+            print(checkout_session)
+            return redirect(url) 
     return redirect('/' + str(auction_id) + '/checkout')
 
 @login_required(login_url='login')
-def success(request):
+def success(request, auction_id):
+    auction = Auction.objects.get(pk=auction_id)
+    auction.order.payment_status = 'Paid'
+    auction.order.save()
     context = {
     }
     return render(request, 'auctions/success.html', context)
 
 @login_required(login_url='login')
-def failure(request):
+def failure(request, auction_id):
     context = {
     }
     return render(request, 'auctions/failure.html', context)
@@ -466,4 +588,6 @@ def orderinfo(request, order_id):
         'order': order
     }
     return render(request, 'auctions/orderinfo.html', context)
+
+
 

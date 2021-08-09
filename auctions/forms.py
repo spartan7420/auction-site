@@ -31,3 +31,9 @@ class EditProfile(ModelForm):
         model = UserProfile
         fields = ['first_name', 'last_name', 'phone', 'address'
                   ,'city', 'state', 'pincode', 'country']
+
+class EditOrderStatus(ModelForm):
+    
+    class Meta:
+        model = Order
+        fields = ['order_status']

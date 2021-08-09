@@ -9,14 +9,9 @@
         <div class="category-list-title"><span class="category-list-title-1">AUCTION</span> <span
                 class="category-list-title-2">CATEGORIES</span></div>
         <ul class="category-list-content">
-            <li><a href="">Mobiles & Electronics</a></li>
-            <li><a href="">Apparel</a></li>
-            <li><a href="">Furniture</a></li>
-            <li><a href="">Vehicle & Accessories</a></li>
-            <li><a href="">Sports</a></li>
-            <li><a href="">Entertainment</a></li>
-            <li><a href="">Home & Garden</a></li>
-            <li><a href="">All Categories</a></li>
+            {% for category in categories %}
+            <li><a href="{% url 'auctionsbycategory' category.slug %}">{{ category.category }}</a></li>
+            {% endfor %}
         </ul>
     </div>
     <div class="middle-section">

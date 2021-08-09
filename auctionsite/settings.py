@@ -65,7 +65,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'currencies.context_processors.currencies'
+                'currencies.context_processors.currencies',
+                'auctions.views.category_list'
             ],
         },
     },

@@ -4,23 +4,20 @@
     <div class="site-logo">
         <img src="" alt="">
     </div>
-    <div class="site-title"><a href="/">Auction Crow</a></div>
+    <div class="site-title"><a href="/">Auction House</a></div>
     <div class="search-bar">
         <input type="text" name="searchtext" placeholder="Search...">
         <a href="#"><i class="fa fa-search" aria-hidden="true"></i></a>
     </div>
     <ul class="nav-links" id="nav-links">
         <li class="dropdown">Categories
+
             <ul class="nav-dropdown">
-                <li><a href="">Mobiles & Electronics</a></li>
-                <li><a href="">Apparel</a></li>
-                <li><a href="">Furniture</a></li>
-                <li><a href="">Vehicle & Accessories</a></li>
-                <li><a href="">Sports</a></li>
-                <li><a href="">Entertainment</a></li>
-                <li><a href="">Home & Garden</a></li>
-                <li><a href="">All Categories</a></li>
+            {% for category in categories %}
+                <li><a href="{% url 'auctionsbycategory' category.slug %}">{{ category.category }}</a></li>
+            {% endfor %}
             </ul>
+
             <i class="fas fa-chevron-down"></i>
         </li>
         <li class="currency">Currency

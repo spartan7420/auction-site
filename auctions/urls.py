@@ -17,8 +17,8 @@ urlpatterns = [
     path('editprofile/', views.editprofile, name='editprofile'),
     path('yourauctions/', views.yourauctions, name='yourauctions'),
     path('yourbids/', views.yourbids, name='yourbids'),
-    path('success/', views.success, name='success'),
-    path('failure/', views.failure, name='failure'),
+    path('<int:auction_id>/success/', views.success, name='success'),
+    path('<int:auction_id>/failure/', views.failure, name='failure'),
     path('create-stripe-account/', views.createstripeaccount, name='create-stripe-account'),
     path('<int:auction_id>/create-checkout-session/', views.createcheckoutsession, name='create-checkout-session'),
     path('<int:auction_id>/selectpaymentmethod/', views.selectpaymentmethod, name='selectpaymentmethod'),
@@ -31,7 +31,9 @@ urlpatterns = [
     path('<int:auction_id>/manageauction/', views.manageauction, name='manageauction'),
     path('<int:auction_id>/endwithoutselling/', views.endwithoutselling, name='endwithoutselling'),
     path('<int:auction_id>/endbyselling/', views.endbyselling, name='endbyselling'),
+    path('<int:auction_id>/<int:buyer_id>/endbysellrequest/', views.endbysellrequest, name='endbysellrequest'),
     path('orders/', views.orders, name='orders'),
     path('<int:order_id>/orderinfo/', views.orderinfo, name='orderinfo'),
+    path('shop/<slug:category_slug>', views.auctionsbycategory, name='auctionsbycategory'),
 ]
 

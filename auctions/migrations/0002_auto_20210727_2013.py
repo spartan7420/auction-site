@@ -18,7 +18,6 @@ class Migration(migrations.Migration):
             name='Auction',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('category', models.CharField(choices=[('Mobiles & Electronics', 'Mobiles & Electronics'), ('Apparel', 'Apparel'), ('Furniture', 'Furniture'), ('Vehicles & Accessories', 'Vehicles & Accessories'), ('Sports', 'Sports'), ('Entertainment', 'Entertainment'), ('Home & Garden', 'Home & Garden')], max_length=200, null=True)),
                 ('name', models.CharField(max_length=200, null=True)),
                 ('description', models.CharField(max_length=1000, null=True)),
                 ('details', models.CharField(max_length=1000, null=True)),

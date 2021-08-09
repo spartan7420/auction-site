@@ -11,5 +11,9 @@ class AuctionAdmin(admin.ModelAdmin):
     list_display = ('title', 'start_date', 'end_date', 'status', 'opening_price', 'buy_price')
     inlines = [AuctionImageInline]
 
+class CategoryAdmin(admin.ModelAdmin):
+    prepopulated_fields = {'slug': ('category',)}
+
 admin.site.register([UserProfile, Bid, Order, Winner, BuyRequest])
 admin.site.register(Auction, AuctionAdmin)
+admin.site.register(Category, CategoryAdmin)
