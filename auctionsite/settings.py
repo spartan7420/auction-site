@@ -82,10 +82,10 @@ WSGI_APPLICATION = 'auctionsite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'auctiondb',
-        'USER': 'admin',
-        'PASSWORD': 'admin9873669908',
-        'HOST': 'localhost',
+        'NAME': 'db535614agn24s',
+        'USER': 'zsfpjvgfqhdeht',
+        'PASSWORD': 'da26fc42189c608dcca75ed0eb1109b06050c42231de881a25e44db8fb814616',
+        'HOST': 'ec2-52-1-20-236.compute-1.amazonaws.com',
         'PORT': '5432'
     }
 }
