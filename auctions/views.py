@@ -26,12 +26,19 @@ def set_currency(request):
 
 
 def home(request):
-    request = set_currency(request)
-    auctions = Auction.objects.all()[:6]
-    context = {
-        'auctions': auctions
-    }
-    return render(request, 'auctions/home.html', context)
+    try:
+        request = set_currency(request)
+        auctions = Auction.objects.all()[:6]
+        context = {
+            'auctions': auctions
+        }
+        return render(request, 'auctions/home.html', context)
+    except:
+        auctions = Auction.objects.all()[:6]
+        context = {
+            'auctions': auctions
+        }
+        return render(request, 'auctions/home.html', context)
 
 def selectcurrency(request):
     if request.method == 'POST':
