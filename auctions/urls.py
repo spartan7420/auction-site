@@ -35,5 +35,7 @@ urlpatterns = [
     path('orders/', views.orders, name='orders'),
     path('<int:order_id>/orderinfo/', views.orderinfo, name='orderinfo'),
     path('shop/<slug:category_slug>', views.auctionsbycategory, name='auctionsbycategory'),
+    path('shop/search/', views.searchresults, name='searchresults'),
+    path('search/', views.search, name='search'),
 ]
 

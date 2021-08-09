@@ -5,10 +5,17 @@
         <img src="" alt="">
     </div>
     <div class="site-title"><a href="/">Auction House</a></div>
-    <div class="search-bar">
-        <input type="text" name="searchtext" placeholder="Search...">
-        <a href="#"><i class="fa fa-search" aria-hidden="true"></i></a>
+    <div class="search-container">
+        <form id="search" class="search-bar" action="{% url 'searchresults' %}" method="GET">
+            {% csrf_token %}
+            <input type="text" id="query" name="query" placeholder="Search...">
+            <a style="cursor:pointer;" onclick="$('#search').submit()"><i class="fa fa-search" aria-hidden="true"></i></a>
+        </form>
+
+        <div class="search-result-container" id="search-result-container">
+        </div>
     </div>
+    
     <ul class="nav-links" id="nav-links">
         <li class="dropdown">Categories
 
@@ -66,3 +73,42 @@
     </div>
 </nav>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $('#query').on('keyup', function () {
+        var searchResults = document.querySelectorAll('.search-result');
+        for (var i = 0; i < searchResults.length; i++) {
+            searchResults[i].remove();
+        }
+        var searchResultsContainer = document.querySelector('.search-result-container');
+        searchResultsContainer.style.display = 'none';
+        var query = $('#query').val();
+        let cookie = document.cookie;
+        let csrfToken = cookie.substring(cookie.indexOf('=') + 1);
+        if (query.length > 2) {
+            var request = $.ajax({
+                                headers: {
+                                    "X-CSRFToken": csrfToken
+                                },
+                                url: {% url 'search' %},
+                                type: "POST",
+                                cache: false,
+                                data: {
+                                    query: query
+                                }
+                         });
+            searchResultsContainer.style.display = 'block';
+            request.done(function (data) {
+                searchResults = []
+                if (data.length > 0) {
+                    for (var i = 0; i < data.length; i++) {
+                        searchResults.push('<a class="search-result" href="' + data[i].id + '/auctiondetail">' + data[i].title + '</a>');
+                    }
+                }
+                $('#search-result-container').empty();
+                for(var i = 0; i < searchResults.length; i++) {
+                    $(searchResults[i]).appendTo(searchResultsContainer);
+                }
+            });
+        }
+    });
+</script>

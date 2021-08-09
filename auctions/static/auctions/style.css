@@ -164,8 +164,10 @@ nav li {
 }
 
 .site-title {
-  font-size: 1.2rem;
+  font-size: 1rem;
+  width: 200px;
   margin-right: 100px;
+  padding-left: 5px;
 }
 
 .nav-links {
@@ -200,6 +202,11 @@ nav li {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+}
+
+.search-container {
+  width: 100%;
+  position: relative;
 }
 
 .search-bar {
@@ -241,6 +248,26 @@ nav li {
   text-align: center;
   background-color: var(--secondary);
   margin: 0;
+}
+
+.search-result-container {
+  display: none;
+  position: absolute;
+  top: 50px;
+  width: 100%;
+  background-color: var(--light);
+  -webkit-box-shadow: 0 2px 5px 0px rgba(0, 0, 0, 0.5);
+          box-shadow: 0 2px 5px 0px rgba(0, 0, 0, 0.5);
+  padding: 5px 10px;
+  max-width: 550px;
+  border-radius: 5px;
+}
+
+.search-result {
+  color: var(--dark-600);
+  text-decoration: none;
+  display: block;
+  padding: 5px 0;
 }
 
 .burger {
@@ -428,7 +455,7 @@ nav li {
 
 @media screen and (max-width: 949px) {
   .site-title {
-    font-size: 1.3rem;
+    font-size: 1rem;
     margin-right: 20px;
   }
   nav {

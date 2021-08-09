@@ -1,0 +1,109 @@
+{% extends 'auctions/main.html' %}
+{% load currency %}
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+<div class="wrapper-shop">
+    <div class="category-list">
+        <div class="category-list-title"><span class="category-list-title-1">AUCTION</span> <span
+                class="category-list-title-2">CATEGORIES</span></div>
+        <ul class="category-list-content">
+            {% for category in categories %}
+            <li><a href="{% url 'auctionsbycategory' category.slug %}">{{ category.category }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="middle-section">
+        <div class="banner-title">You searched for "{{ query }}"</div>
+        <hr>
+        <div class="middle-section-content">
+            {% if auctions %}
+            {% for auction in auctions %}
+            <div class="auction-card">
+                <div class="auction-img-container">
+                    <img class="auction-img" src="{{ auction.auctionimage_set.all.first.image.url }}" alt="">
+                </div>
+                <div class="auction-title">{{ auction.title|truncatechars:60 }}</div>
+                <div class="auction-detail-box">
+                    <div class="detail"><span class="detail-text">Number of Bids</span><span
+                            class="detail-value blue">{{ auction.bid_set.count }}</span>
+                    </div>
+                    <div class="detail"><span class="detail-text">Opening Price</span><span class="detail-value blue">
+                            {% for curr in CURRENCIES %}
+                            {% if curr.code == request.session.currency %}
+                            {{ curr.symbol }}
+                            {% endif %}
+                            {% endfor %}
+                            {{ auction.opening_price|currency:request.session.currency }}
+                        </span>
+                    </div>
+                    {% if auction.is_started %}
+                    <div class="detail"><span class="detail-text">Current Bid Price</span>
+                        <span class="detail-value dark bold">
+                            {% for curr in CURRENCIES %}
+                            {% if curr.code == request.session.currency %}
+                            {{ curr.symbol }}
+                            {% endif %}
+                            {% endfor %}
+                            {% if auction.current_bid_price %}
+                            {{ auction.current_bid_price|currency:request.session.currency }}
+                            {% else %}
+                            {{ auction.opening_price|currency:request.session.currency }}
+                            {% endif %}
+                        </span>
+                    </div>
+                    {% endif %}
+                </div>
+
+                {% if not auction.is_sold and auction.is_started and not auction.user == user %}
+                <a href="{% url 'placebid' auction.id %}" class="primary-btn">Place Bid</a>
+                {% endif %}
+                <a href="{% url 'auctiondetail' auction.id %}" class="secondary-btn">View</a>
+                {% if not auction.is_sold and auction.is_started %}
+                <div class="countdown-timer">
+                    <div class="countdown-title">ENDS IN</div>
+                    <div class="timer">
+                        <div class="timer-values">
+                            <span class="day-value">{{ auction.time_left.day }}</span> :
+                            <span class="hr-value">{{ auction.time_left.hour }}</span> :
+                            <span class="min-value">{{ auction.time_left.min }}</span>
+                            <span class="sec-value sec">{{ auction.time_left.sec }}</span>
+                        </div>
+                        <div class="timer-names">
+                            <span class="time-title">DAY</span>
+                            <span class="time-title">HOUR</span>
+                            <span class="time-title">MIN</span>
+                        </div>
+                    </div>
+                </div>
+                {% elif auction.is_scheduled %}
+                <p class="auction-status">Scheduled</p>
+                <div class="countdown-timer">
+                    <div class="countdown-title">STARTS IN</div>
+                    <div class="timer">
+                        <div class="timer-values">
+                            <span class="day-value">{{ auction.time_until_start.day }}</span> :
+                            <span class="hr-value">{{ auction.time_until_start.hour }}</span> :
+                            <span class="min-value">{{ auction.time_until_start.min }}</span>
+                            <span class="sec-value sec">{{ auction.time_until_start.sec }}</span>
+                        </div>
+                        <div class="timer-names">
+                            <span class="time-title">DAY</span>
+                            <span class="time-title">HOUR</span>
+                            <span class="time-title">MIN</span>
+                        </div>
+                    </div>
+                </div>
+                {% elif auction.is_ended %}
+                <p class="auction-status">Ended</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+            {% else %}
+            <p>We couldn't find what you're looking for.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

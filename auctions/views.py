@@ -589,5 +589,26 @@ def orderinfo(request, order_id):
     }
     return render(request, 'auctions/orderinfo.html', context)
 
+def search(request):
+    if request.method == 'POST':
+        query = request.POST.get('query')
+        auctions = list(Auction.objects.filter(title__icontains=query).values())
+
+        return JsonResponse(auctions, safe=False)
+
+def searchresults(request):
+    if 'query' in request.GET:
+        query = request.GET['query']
+        auctions = Auction.objects.filter(title__icontains=query)
+        context = {
+            'auctions': auctions,
+            'query': query
+        }
+        return render(request, 'auctions/searchresults.html', context)
+    else: 
+        context = {
+        }
+        return render(request, 'auctions/searchresults.html', context)
+
 
 
