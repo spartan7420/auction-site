@@ -244,7 +244,7 @@ def generate_filename(instance, filename):
     time_now  = datetime.datetime.now().strftime('%m_%d_%Y_%H_%M_%S') 
     filebase, extension = filename.split('.')
     filebase = str(filebase) + str(time_now)
-    return '%s.%s' % (filebase, extension)
+    return 'images/%s.%s' % (filebase, extension)
 
 class AuctionImage(models.Model):
     auction = models.ForeignKey(Auction, on_delete=models.CASCADE)

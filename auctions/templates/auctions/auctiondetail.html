@@ -170,7 +170,7 @@
         <div class="product-desc">
             <div class="desc-title">Product Description</div>
             <div class="desc-content">
-                {{ auction.description }}
+                {{ auction.description|linebreaks }}
             </div>
         </div>
         <div class="product-desc">
@@ -182,7 +182,7 @@
         <div class="product-desc">
             <div class="desc-title">More Details</div>
             <div class="desc-content">
-                {{ auction.details }}
+                {{ auction.details|linebreaks }}
             </div>
         </div>
     </div>

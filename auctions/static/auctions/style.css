@@ -813,13 +813,11 @@ hr {
 
 .primary-btn {
   text-align: center;
-  line-height: 40px;
-  font-weight: bold;
   letter-spacing: 1px;
   text-transform: uppercase;
   text-decoration: none;
   width: 100%;
-  height: 40px;
+  padding: 8px 0px 8px 0;
   font-size: 1rem;
   color: var(--light);
   background-color: var(--secondary);
@@ -828,13 +826,11 @@ hr {
 
 .secondary-btn {
   text-align: center;
-  line-height: 40px;
-  font-weight: bold;
   letter-spacing: 1px;
   text-transform: uppercase;
   text-decoration: none;
   width: 100%;
-  height: 40px;
+  padding: 8px 0px 8px 0;
   font-size: 1rem;
   color: var(--secondary);
   border: 1px solid var(--secondary);
@@ -1150,7 +1146,7 @@ hr {
     font-size: 0.8rem;
   }
   .timer-values {
-    font-size: 1.2rem !important;
+    font-size: 0.9rem !important;
   }
   .parameters {
     display: none;
@@ -1159,9 +1155,6 @@ hr {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-  }
-  .countdown-timer {
-    margin: 0 !important;
   }
 }
 
@@ -1208,7 +1201,7 @@ hr {
 
 @media screen and (max-width: 600px) {
   .wrapper {
-    padding: 20px 10px 100px 10px;
+    padding: 20px 0px 100px 0px;
   }
   .top-section {
     -ms-grid-columns: 1fr;
@@ -1931,6 +1924,10 @@ hr {
   .more-info-container {
     -ms-grid-columns: 1fr;
         grid-template-columns: 1fr;
+  }
+  .primary-btn, .secondary-btn {
+    font-size: 0.9rem;
+    font-weight: 400;
   }
 }
 

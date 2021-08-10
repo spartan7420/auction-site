@@ -31,17 +31,19 @@
                 <div class="auction-img-container">
                     <img class="auction-img" src="{{ auction.auctionimage_set.all.first.image.url }}" alt="">
                 </div>
-                <div class="auction-title">{{ auction.title|truncatechars:60 }}</div>
+                <div class="auction-title">
+                    <a href="{% url 'auctiondetail' auction.id %}">{{ auction.title|truncatechars:30 }}</a>
+                </div>
                 <div class="auction-detail-box">
-                    <div class="detail"><span class="detail-text">Number of Bids</span><span class="detail-value blue">{{ auction.bid_set.count }}</span></div>
-                    <div class="detail"><span class="detail-text">Opening Price</span><span class="detail-value blue">
+                    <div class="detail"><span class="detail-text">Bid Count</span><span class="detail-value blue">{{ auction.bid_set.count }}</span></div>
+                    <div class="detail"><span class="detail-text">Base Price</span><span class="detail-value blue">
                         {% for curr in CURRENCIES %} 
                             {% if curr.code == request.session.currency %}
                                 {{ curr.symbol }}
                             {% endif %}
                         {% endfor %}
                         {{ auction.opening_price|currency:request.session.currency }}</span></div>
-                    <div class="detail"><span class="detail-text">Current Bid Price</span>
+                    <div class="detail"><span class="detail-text">Current Bid</span>
                         <span class="detail-value dark bold">
                                 {% for curr in CURRENCIES %}
                                     {% if curr.code == request.session.currency %}
@@ -59,7 +61,6 @@
                 {% if not auction.is_sold and auction.is_started and not auction.user == user %}
                     <a href="{% url 'placebid' auction.id %}" class="primary-btn">Place Bid</a>
                 {% endif %}
-                <a href="{% url 'auctiondetail' auction.id %}" class="secondary-btn">View</a>
                 {% if not auction.is_sold and auction.is_started %}
                     <div class="countdown-timer">
                         <div class="countdown-title">ENDS IN</div>
