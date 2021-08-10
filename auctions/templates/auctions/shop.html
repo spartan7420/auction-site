@@ -59,8 +59,8 @@
             
             {% if not auction.is_sold and auction.is_started and not auction.user == user %}
             <a href="{% url 'placebid' auction.id %}" class="primary-btn">Place Bid</a>
-            {% endif %}
-            <a href="{% url 'auctiondetail' auction.id %}" class="secondary-btn">View</a>
+            {% else %}
+            <a href="{% url 'manageauction' auction.id %}" class="primary-btn">Manage</a>
             {% if not auction.is_sold and auction.is_started %}
             <div class="countdown-timer">
                 <div class="countdown-title">ENDS IN</div>
