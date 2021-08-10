@@ -23,7 +23,7 @@ class UserProfile(models.Model):
     country = models.CharField(max_length=2, choices=pytz.country_names.items(), null=True)
     date_of_birth = models.DateField(null=True)
     reputation = models.IntegerField(default=0)
-    currency = models.ForeignKey(Currency, on_delete=models.CASCADE, null=True, blank=True)
+    currency = models.ForeignKey(Currency, on_delete=models.CASCADE, null=True, blank=True, defaul='INR')
     stripe_account_id = models.CharField(max_length=400, blank=True, null=True)
 
     def bid_count(self):
