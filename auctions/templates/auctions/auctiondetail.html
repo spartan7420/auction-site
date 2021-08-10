@@ -30,17 +30,21 @@
             <div class="product-gallery">
                 <div id="slide-wrapper">
                     <div id="slider">
+                        {% if auction.auctionimage_set.all.first.image.url %}
                         <img class="thumbnail active" src="{{ auction.auctionimage_set.all.first.image.url }}">
-                    {% for img in auction.auctionimage_set.all %}
+                        {% for img in auction.auctionimage_set.all %}
                         {% if forloop.counter != 1 %}
                         <img class="thumbnail" src="{{ img.image.url }}">
                         {% endif %}
-                    {% endfor %}
+                        {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
                 <div id="img-container">
                     <div id="lens"></div>
+                    {% if auction.auctionimage_set.all %}
                     <img id=featured src="{{ auction.auctionimage_set.all.first.image.url }}">
+                    {% endif %}
                 </div>
             </div>
             <div class="product-details">
