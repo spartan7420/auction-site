@@ -736,6 +736,32 @@ hr {
   margin-top: 20px;
 }
 
+.middle-section .primary-btn {
+  text-align: center;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  width: 100%;
+  padding: 8px 0px 8px 0;
+  font-size: 1rem;
+  color: var(--light);
+  background-color: var(--secondary);
+  margin: 4px 0;
+}
+
+.middle-section .secondary-btn {
+  text-align: center;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  text-decoration: none;
+  width: 100%;
+  padding: 8px 0px 8px 0;
+  font-size: 1rem;
+  color: var(--secondary);
+  border: 1px solid var(--secondary);
+  margin: 4px 0;
+}
+
 .auction-card {
   max-width: 260px;
   padding: 8px;
@@ -1206,11 +1232,6 @@ hr {
         grid-template-columns: 1fr;
     height: auto;
   }
-  .banner {
-    -ms-grid-row: 1;
-    grid-row: 1;
-    height: 250px;
-  }
   .banner-image {
     height: 200px;
   }
@@ -1257,8 +1278,6 @@ hr {
   }
   .wrapper-shop .primary-btn, .wrapper-shop .secondary-btn {
     font-size: 0.7rem;
-    height: 30px;
-    line-height: 30px;
   }
   .wrapper-shop .day-value, .wrapper-shop .hr-value, .wrapper-shop .min-value {
     font-size: 0.9rem;
