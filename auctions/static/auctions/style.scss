@@ -769,6 +769,9 @@ hr {
     }
 }
 @media screen and (max-width: 914px) {
+    .view-more {
+        font-size: 0.7rem;
+    }
     .product-details {
         margin-top: 0 !important;
     }
@@ -1510,8 +1513,17 @@ hr {
         grid-template-columns: 1fr;
     }
     .primary-btn, .secondary-btn {
-        font-size: 0.9rem;
+        font-size: 0.7rem !important;
         font-weight: 400;
+    }
+    .middle-section-title {
+        font-size: 1.2rem;
+    }
+    .middle-section {
+        margin-top: 0px;
+    }
+    footer {
+        height: 200px;
     }
 }
 
