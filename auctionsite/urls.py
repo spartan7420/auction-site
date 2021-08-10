@@ -29,4 +29,9 @@ urlpatterns = [
     # re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
 ]
 
+handler404 = 'auctions.views.custom_page_not_found_view'
+handler500 = 'auctions.views.custom_error_view'
+handler403 = 'auctions.views.custom_permission_denied_view'
+handler400 = 'auctions.views.custom_bad_request_view'
+
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -17,6 +17,7 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 # Create your views here.
 def set_currency(request):
+    
     if not request.session.has_key('currency'):
         if request.user.is_authenticated:
             request.session['currency'] = request.user.userprofile.currency.code
@@ -653,4 +654,15 @@ def searchresults(request):
         return render(request, 'auctions/searchresults.html', context)
 
 
+#Exception Pages
+def custom_page_not_found_view(request, exception):
+    return render(request, "auctions/404.html", {})
 
+def custom_error_view(request, exception=None):
+    return render(request, "auctions/500.html", {})
+
+def custom_permission_denied_view(request, exception=None):
+    return render(request, "auctions/403.html", {})
+
+def custom_bad_request_view(request, exception=None):
+    return render(request, "errors/400.html", {})
