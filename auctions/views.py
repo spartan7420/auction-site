@@ -513,25 +513,25 @@ def createcheckoutsession(request, auction_id):
     payment_method = 'Debit Card/Credit Card'
     buy_req = False
     total = 0
+    current_currency = Currency.objects.get(code=request.session['currency']).factor
     if auction.buyrequest_set.get(user=user).status == 'Accepted':
-        price = auction.buy_price
+        price = auction.buy_price * current_currency
         shipping = Decimal()
-
         if not auction.shipping_price:
             shipping = 0
         else:
-            shipping = auction.shipping_price 
+            shipping = auction.shipping_price * current_currency 
         total = price + shipping
         Order.objects.create(user=user, auction=auction, payment_amount=total, payment_method=payment_method)
         buy_req = True
     else:
-        price = auction.current_bid_price()
+        price = auction.current_bid_price() * current_currency
         shipping = Decimal()
 
         if not auction.shipping_price:
             shipping = 0
         else:
-            shipping = auction.shipping_price 
+            shipping = auction.shipping_price * current_currency
         total = price + shipping
         Order.objects.create(user=user, auction=auction, payment_amount=total, payment_method=payment_method)
 
@@ -543,7 +543,7 @@ def createcheckoutsession(request, auction_id):
             line_items=[{
                 'name': auction.title,
                 'amount': int(total * 100),
-                'currency': 'inr',
+                'currency': request.session['currency'].lower(),
                 'quantity': 1,
             }],
             payment_intent_data={
@@ -566,7 +566,7 @@ def createcheckoutsession(request, auction_id):
             line_items=[{
                 'name': auction.title,
                 'amount': int(total * 100),
-                'currency': 'inr',
+                'currency': request.session['currency'].lower(),
                 'quantity': 1,
             }],
             payment_intent_data={

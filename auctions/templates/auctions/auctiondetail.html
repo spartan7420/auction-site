@@ -86,7 +86,7 @@
             {% endif %}
                 <div class="auction-detail-box">
                     <div class="detail"><span class="detail-text">Number of Bids</span><span class="detail-value blue">{{ auction.bid_set.count }}</span></div>
-                    <div class="detail"><span class="detail-text">Opening Price</span><span class="detail-value blue">
+                    <div class="detail"><span class="detail-text">Base Price</span><span class="detail-value blue">
                             {% for curr in CURRENCIES %}
                                 {% if curr.code == request.session.currency %}
                                     {{ curr.symbol }}

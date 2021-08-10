@@ -716,7 +716,11 @@ hr {
 }
 
 .banner {
-  height: 400px;
+  max-height: 400px;
+}
+
+.banner img {
+  max-width: 100%;
 }
 
 .banner-title, .middle-section-title {
@@ -724,12 +728,6 @@ hr {
   color: var(--primary);
   text-align: center;
   margin-bottom: 10px;
-}
-
-.banner-image {
-  margin-top: 10px;
-  background-color: var(--dark-400);
-  height: 350px;
 }
 
 .middle-section {

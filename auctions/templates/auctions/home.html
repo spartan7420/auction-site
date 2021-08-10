@@ -1,5 +1,5 @@
 {% extends 'auctions/main.html' %}
-
+{% load static %}
 {% block title %}Home{% endblock %}
 
 {% block content %}
@@ -15,9 +15,7 @@
             </ul>
         </div>
         <div class="banner">
-            <div class="banner-image">
-                <img src="" alt="">
-            </div>
+            <img src="{% static 'auctions/banner.png' %}" alt="">
         </div>
     </div>
     <div class="middle-section">
