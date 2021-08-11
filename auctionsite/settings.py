@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'currencies'
+    'currencies',
+    'cloudinary_storage',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -89,6 +91,14 @@ DATABASES = {
         'PORT': '5432'
     }
 }
+
+CLOUDINARY_STORAGE = {
+             'CLOUD_NAME': 'auction-house-images',
+             'API_KEY': '387944874292187',
+             'API_SECRET': '9yl3OSpIU00i6nqeoiIH50cVFUs'
+            }
+
+DEFAULT_FILE_STORAGE='cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
