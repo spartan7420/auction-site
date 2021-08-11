@@ -316,9 +316,12 @@ def yourbids(request):
     bids = []
     for entry in auctions:
         b = user.bid_set.filter(auction=entry.auction).latest('created_at')
-        if entry.auction.buyrequest_set.filter(user=user).exists():
-            buy_req = entry.auction.buyrequest_set.get(user=request.user)
-            b.buy_req = buy_req
+        try:
+            if entry.auction.buyrequest_set.filter(user=user).exists():
+                buy_req = entry.auction.buyrequest_set.get(user=request.user)
+                b.buy_req = buy_req
+        except:
+            pass
         bids.append(b)
 
     for buy_req in BuyRequest.objects.all():
