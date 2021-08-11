@@ -101,7 +101,7 @@
                 searchResults = []
                 if (data.length > 0) {
                     for (var i = 0; i < data.length; i++) {
-                        searchResults.push('<a class="search-result" href="' + data[i].id + '/auctiondetail">' + data[i].title + '</a>');
+                        searchResults.push(`<a class="search-result" href="/${data[i].id}/auctiondetail">${data[i].title}</a>`);
                     }
                 }
                 $('#search-result-container').empty();
