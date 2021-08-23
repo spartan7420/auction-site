@@ -45,7 +45,7 @@ nav {
   background-color: var(--primary);
   padding: 0 100px;
   color: var(--light);
-  z-index: 2;
+  z-index: 10000;
   width: auto;
   height: 66px;
   -webkit-box-shadow: 0 2px 6px 0px rgba(0, 0, 0, 0.5);
