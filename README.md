@@ -1,4 +1,4 @@
-# auction-site
+# Auction House
 A web application for conducting online auctions.
 
 Deployed at:
