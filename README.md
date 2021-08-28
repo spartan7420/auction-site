@@ -1,5 +1,5 @@
 # Auction House
-A web application for conducting online auctions.
+A full-fledged web application for conducting online auctions.
 
 ## Demo
 https://auction-house-01.herokuapp.com/
