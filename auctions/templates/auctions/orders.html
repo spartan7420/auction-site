@@ -5,8 +5,9 @@
 {% block content %}
 <div class="wrapper">
     <div class="title">
-        Your Orders
+        Your Orders ({{ orders.count }})
     </div><hr>
+    {% if orders %}
     {% for order in orders %}
     <div class="your-auction">
         <div class="your-auction-card">
@@ -45,5 +46,8 @@
         </div>
     </div>
     {% endfor %}
+    {% else %}
+        No Orders Found
+    {% endif %}
 </div>
 {% endblock %}

@@ -338,6 +338,7 @@ def yourbids(request):
 @login_required(login_url='login')
 def editauction(request, auction_id):
     auction = Auction.objects.get(pk=auction_id)
+    
     if auction.is_scheduled:
         form = CreateAuctionForm(instance=auction)
         if request.method =='POST':
@@ -364,30 +365,34 @@ def deleteauction(request, auction_id):
 @login_required(login_url='login')
 def manageauction(request, auction_id):
     auction = Auction.objects.get(pk=auction_id)
-    bids = auction.bid_set.all().order_by('-created_at')
-    try:
-        if auction.order:
-            form = EditOrderStatus(instance=auction.order)
+    user = request.user
+    if auction.user == user:
+        bids = auction.bid_set.all().order_by('-created_at')
+        try:
+            if auction.order:
+                form = EditOrderStatus(instance=auction.order)
 
-            if request.method == 'POST':
-                form = EditOrderStatus(request.POST, instance=auction.order)
-                if form.is_valid():
-                    form.save()
-                    messages.success(request, 'Order status was updated successfully.')
-                    return redirect('/' + str(auction_id) + '/manageauction')
+                if request.method == 'POST':
+                    form = EditOrderStatus(request.POST, instance=auction.order)
+                    if form.is_valid():
+                        form.save()
+                        messages.success(request, 'Order status was updated successfully.')
+                        return redirect('/' + str(auction_id) + '/manageauction')
 
+                context = {
+                    'auction': auction,
+                    'bids': bids,
+                    'form': form
+                }
+                return render(request, 'auctions/manageauction.html', context)
+        except:
             context = {
                 'auction': auction,
-                'bids': bids,
-                'form': form
+                'bids': bids
             }
             return render(request, 'auctions/manageauction.html', context)
-    except:
-        context = {
-            'auction': auction,
-            'bids': bids
-        }
-        return render(request, 'auctions/manageauction.html', context)
+    else:
+        return redirect('home')
 
 
 @login_required(login_url='login')
@@ -423,18 +428,37 @@ def endbyselling(request, auction_id):
 
     winner_user = auction.bid_set.latest('created_at').user
     Winner.objects.create(user=winner_user, auction=auction)
-
+    
     messages.success(request, f"Auction ID {auction.id} has been sold to User ID {winner_user.id}.")
     return redirect('yourauctions')
 
+# @login_required(login_url='login')
+# def endbysellingBR(request, auction_id, buy_id):
+#     auction = Auction.objects.get(pk=auction_id)
+#     auction.end_date = timezone.now()
+#     auction.status = 'Sold'
+#     auction.save()
+
+#     buy_req = BuyRequest.objects.get(pk=buy_id)
+#     print(buy_req)
+#     buy_req.status = 'Accepted'
+#     winner_user = auction.bid_set.latest('created_at').user
+#     Winner.objects.create(user=winner_user, auction=auction)
+
+#     messages.success(request, f"Auction ID {auction.id} has been sold to User ID {winner_user.id}.")
+#     return redirect('yourauctions')
+
 @login_required(login_url='login')
-def endbysellrequest(request, auction_id, buyer_id):
+def endbysellrequest(request, auction_id, buyer_id, buyreq_id):
     user = User.objects.get(pk=buyer_id)
+    print("HEELLLOOOO")
     auction = Auction.objects.get(pk=auction_id)
     auction.end_date = timezone.now()
     auction.status = 'Sold'
-    auction.buyrequest_set.get(user=user).status = 'Accepted'
-    auction.buyrequest_set.get(user=user).save()
+    buy_req = BuyRequest.objects.get(pk=buyreq_id)
+    buy_req.status = 'Accepted'
+    print(buy_req.status)
+    buy_req.save()
     auction.save()
 
     Winner.objects.create(user=user, auction=auction)
@@ -473,8 +497,72 @@ def selectpaymentmethod(request, auction_id):
 def checkout(request, auction_id, payment_method):
     user = request.user
     auction = Auction.objects.get(pk=auction_id)
+    total = 0
+    current_currency = Currency.objects.get(code=request.session['currency']).factor
+    order = Order()
+    if request.method == 'POST':
+        if auction.buyrequest_set.exists():
+            if auction.buyrequest_set.get(user=user).status == 'Accepted':
+                price = auction.buy_price
+                shipping = Decimal()
+
+                if not auction.shipping_price:
+                    shipping = 0
+                else:
+                    shipping = auction.shipping_price * current_currency
+                total = price + shipping
+                order = Order.objects.create(user=user, auction=auction, payment_amount=total, payment_method=payment_method)
+        else: 
+                price = auction.current_bid_price() * current_currency
+                shipping = Decimal()
+                if not auction.shipping_price:
+                    shipping = 0
+                else:
+                    shipping = auction.shipping_price * current_currency
+                total = price + shipping
+                order = Order.objects.create(user=user, auction=auction, payment_amount=total, payment_method=payment_method)
+                
+        return redirect(f'/{order.id}/orderinfo/')
+
+    # print(auction.winner.user)
+    # print(auction.buyrequest_set.exists())
+    # print(auction.buyrequest_set.get(user=user).status )
     if auction.winner.user == user:
-        if auction.buyrequest_set.get(user=user).status == 'Accepted':
+        if auction.buyrequest_set.exists():
+            if auction.buyrequest_set.get(user=user).status == 'Accepted':
+                price = auction.buy_price
+                shipping = Decimal()
+
+                if not auction.shipping_price:
+                    shipping = 0
+                else:
+                    shipping = auction.shipping_price 
+                total = str(price + shipping)
+
+                context = {
+                    'auction': auction,
+                    'payment_method': payment_method,
+                    'total': total,
+                    'buyreq': True
+                }
+                return render(request, 'auctions/checkout.html', context)
+            # else:
+            #     price = auction.current_bid_price()
+            #     shipping = Decimal()
+
+            #     if not auction.shipping_price:
+            #         shipping = 0
+            #     else:
+            #         shipping = auction.shipping_price 
+            #     total = str(price + shipping)
+
+            #     context = {
+            #         'auction': auction,
+            #         'payment_method': payment_method,
+            #         'total': total
+            #     }
+            #     return render(request, 'auctions/checkout.html', context)
+        else:
             price = auction.buy_price
             shipping = Decimal()
 
@@ -488,27 +576,11 @@ def checkout(request, auction_id, payment_method):
                 'auction': auction,
                 'payment_method': payment_method,
                 'total': total,
-                'buyreq': True
+                'buyreq': False
             }
             return render(request, 'auctions/checkout.html', context)
-        else:
-            price = auction.current_bid_price()
-            shipping = Decimal()
 
-            if not auction.shipping_price:
-                shipping = 0
-            else:
-                shipping = auction.shipping_price 
-            total = str(price + shipping)
-
-            context = {
-                'auction': auction,
-                'payment_method': payment_method,
-                'total': total
-            }
-            return render(request, 'auctions/checkout.html', context)
-    else:
-        return redirect('home')
+    return redirect('home')
 
 @login_required(login_url='login')
 def createcheckoutsession(request, auction_id):
@@ -591,8 +663,10 @@ def createcheckoutsession(request, auction_id):
 @login_required(login_url='login')
 def success(request, auction_id):
     auction = Auction.objects.get(pk=auction_id)
+    user = request.user
+
     try:
-        if auction.order.user == 'user':
+        if auction.order.user == user:
             auction.order.payment_status = 'Paid'
             auction.order.save()
             context = {
@@ -607,8 +681,9 @@ def success(request, auction_id):
 @login_required(login_url='login')
 def failure(request, auction_id):
     auction = Auction.objects.get(pk=auction_id)
+    user = request.user
     try:
-        if auction.order.user == 'user':
+        if auction.order.user == user:
             context = {
             }
             return render(request, 'auctions/failure.html', context)

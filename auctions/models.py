@@ -305,5 +305,5 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     
-    def __str__(self):
-        return str(self.auction.title)
+    # def __str__(self):
+    #     return str(self.auction.title)

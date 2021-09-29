@@ -198,7 +198,7 @@
                             <div class="user-name">{{ buy_req.user.userprofile.first_name }}</div>
 
                             {% if buy_req.status == 'Waiting' %}
-                            <a href="{% url 'endbysellrequest' auction.id buy_req.user.id %}" class="btn blue margin-rt-5">SELL</a>
+                            <a href="{% url 'endbysellrequest' auction.id buy_req.user.id buy_req.id %}" class="btn blue margin-rt-5">SELL</a>
                             <a href="{% url 'rejectbuyrequest' buy_req.id %}" class="btn red"
                             onclick="return confirm('Are you sure you want to reject this buy request?')">REJECT</a>
                             {% else %}

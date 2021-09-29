@@ -142,7 +142,7 @@
                 <button type="submit" class="primary-btn">Pay & Confirm Order</button>
             </form>
             {% elif payment_method == 'cod' %}
-            <form action="" method="POST">
+            <form action="{% url 'checkout' auction.id 'Cash On Delivery' %}" method="POST">
                 {% csrf_token%}
                 <button type="submit" class="primary-btn">Confirm Order</button>
             </form>
