@@ -159,7 +159,7 @@
                         </div>
                         <a href="{% url 'placebid' bid.auction.id %}" class="manage-btn blue-light-btn">Place Bid</a>
                         {% if not bid.buy_req %}
-                            <a href="{% url 'createbuyrequest' bid.auction.id %}" class="manage-btn green-btn">Buy</a>
+                            <a href="" class="manage-btn green-btn">Buy</a>
                         {% else %}
                             <div class="buy-status">
                                 <div>Buy Request</div>
