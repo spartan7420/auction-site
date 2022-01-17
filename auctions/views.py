@@ -324,10 +324,10 @@ def yourbids(request):
             pass
         bids.append(b)
 
-    for buy_req in BuyRequest.objects.all():
-        if buy_req.user == user:
-            buy_req.buy_req = buy_req
-            bids.append(buy_req)
+#     for buy_req in BuyRequest.objects.all():
+#         if buy_req.user == user:
+#             buy_req.buy_req = buy_req
+#             bids.append(buy_req)
 
     context = {
         'bids': bids,
