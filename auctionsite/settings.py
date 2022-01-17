@@ -83,19 +83,19 @@ WSGI_APPLICATION = 'auctionsite.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'db535614agn24s',
-        'USER': 'zsfpjvgfqhdeht',
-        'PASSWORD': 'da26fc42189c608dcca75ed0eb1109b06050c42231de881a25e44db8fb814616',
-        'HOST': 'ec2-52-1-20-236.compute-1.amazonaws.com',
-        'PORT': '5432'
+        'ENGINE': '',
+        'NAME': '',
+        'USER': '',
+        'PASSWORD': '',
+        'HOST': '',
+        'PORT': ''
     }
 }
 
 CLOUDINARY_STORAGE = {
-             'CLOUD_NAME': 'auction-house-images',
-             'API_KEY': '387944874292187',
-             'API_SECRET': '9yl3OSpIU00i6nqeoiIH50cVFUs'
+             'CLOUD_NAME': '',
+             'API_KEY': '',
+             'API_SECRET': ''
             }
 
 DEFAULT_FILE_STORAGE='cloudinary_storage.storage.MediaCloudinaryStorage'
@@ -150,7 +150,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # Stripe Settings
-STRIPE_PUBLISHABLE_KEY = "pk_test_51JLNKrSFuC5f8eVLhWtJXfGXooMMVNfwhAnnnXXCqWKTAttAyLYUN1vOHhFpfNS8ewSProY7ktb4xFxhcq1Ox26T00ck8mRFgO"
-STRIPE_SECRET_KEY = "sk_test_51JLNKrSFuC5f8eVLn1KgmJgBB1XYAOUpvstt4evvUtZG9hex5LvdyS2nFj9LrggNyd4BGGGfXSp4LFD0JEMPD7Ck00ehvbywha"
+STRIPE_PUBLISHABLE_KEY = ""
+STRIPE_SECRET_KEY = ""
 STRIPE_WEBHOOK_SECRET = ""
-STRIPE_CONNECT_CLIENT_ID = 'ca_JzM6GsjmulrvWzCmVYKDi53p3IWv3M4K'
+STRIPE_CONNECT_CLIENT_ID = ''
