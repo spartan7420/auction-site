@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-+di)xr=gjqb$v^m)e)dm%lqmxn@o7#697e0_l(%4x%=&45v_kw'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['auction-house-01.herokuapp.com', '127.0.0.1']
 
@@ -82,20 +83,13 @@ WSGI_APPLICATION = 'auctionsite.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': '',
-        'NAME': '',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': ''
-    }
+     'default': dj_database_url.config(default='postgres://admin:WpWuXSVk1F5D9JsavZqVdTD8Vdshu86Z@dpg-cevrb7qrrk0eqcvq7ps0-a.oregon-postgres.render.com/autiondb', conn_max_age=600)
 }
 
 CLOUDINARY_STORAGE = {
-             'CLOUD_NAME': '',
-             'API_KEY': '',
-             'API_SECRET': ''
+             'CLOUD_NAME': 'auction-house-images',
+             'API_KEY': '387944874292187',
+             'API_SECRET': '9yl3OSpIU00i6nqeoiIH50cVFUs'
             }
 
 DEFAULT_FILE_STORAGE='cloudinary_storage.storage.MediaCloudinaryStorage'
