@@ -2,7 +2,7 @@
 A full-fledged web application for conducting online auctions.
 
 ## Demo
-https://auction-house-01.herokuapp.com/
+https://auctionapp.onrender.com/
 
 ## Some Screenshots
 
