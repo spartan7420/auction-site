@@ -1,0 +1,16 @@
+databases:
+  - name: auctiondb
+    databaseName: auctiondb
+    user: admin
+
+services:
+  - type: web
+    name: auctionsite
+    env: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn auctionsite.wsgi:application"
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4
